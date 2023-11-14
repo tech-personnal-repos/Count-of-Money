@@ -40,6 +40,17 @@ services:
       db:
         condition: service_healthy
         restart: true
+  web:
+    build:
+      context: ./web
+    container_name: count-money-web
+    restart: always
+    environment:
+      BACKEND_URL: count-money-api
+    ports:
+      - 80:8080
+    depends_on:
+      - api
 
 networks:
   back-tier:

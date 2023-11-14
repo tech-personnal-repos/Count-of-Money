@@ -1,0 +1,59 @@
+version: '3'
+
+secrets:
+  mongo_username:
+    environment: MONGO_INITDB_ROOT_USERNAME
+  mongo_password:
+    environment: MONGO_INITDB_ROOT_PASSWORD
+  db_uri:
+    environment: DB_URI
+
+services:
+  db:
+    container_name: count-money-mongo
+    image: mongo
+    restart: always
+    command: mongod --auth
+    environment:
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/${MONGO_INITDB_DATABASE} --quiet
+      start_period: 15s
+      retries: 3
+      interval: 15s
+    ports:
+      - 27017:27017
+    networks:
+      - back-tier
+    volumes:
+      - db-data:/data/db
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+  api:
+    build:
+      context: ./api
+    container_name: count-money-api
+    restart: always
+    environment:
+      MONGO_HOST: ${DB_HOST}
+      MONGO_PORT: ${DB_PORT}
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+      DB_NAME: ${MONGO_INITDB_DATABASE}
+      DB_URI: mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@db:${DB_PORT}
+    networks:
+      - back-tier
+    ports:
+      - 3000:3000
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
+
+networks:
+  back-tier:
+    name: ${NETWORK_BACK}
+
+volumes:
+  db-data:
+    name: ${DATABASE_VOLUME}

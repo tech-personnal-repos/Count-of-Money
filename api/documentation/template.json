@@ -1,9 +1,9 @@
 {
 	"openapi": "3.0.3",
 	"info": {
-		"title": "DoYield API",
-		"description": "<a target=\"_blank\" href=\"https://www.figma.com/file/s0xIiAqs11TGIGLkb7mlQM?embed_host=share&kind=&node-id=0%3A1&viewer=1\">Schéma de la base de donnée</a>",
-		"version": "1.0.0"
+		"title": "Count of Money API",
+		"description": "<a target=\"_blank\" href=\"\">Schéma de la base de donnée</a>",
+		"version": "0.0.1"
 	},
 	"components": {
 		"securitySchemes": {

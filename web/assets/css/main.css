@@ -1,0 +1,175 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@media (prefers-color-scheme: light) {
+    :root.automatic {
+        --text: #562b31;
+        --background: #f3e7e9;
+        --primary: #eabca4;
+        --secondary: #e4c8cc;
+        --accent: #a65461;
+        --success: #81e052;
+        --danger: #ee2b3b;
+        --warning: #f9c753;
+
+        --card-bg: rgba(0, 0, 0, 0.03);
+        --hover-bg: rgba(0, 0, 0, 0.05);
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    :root.automatic {
+        --text: #f8f1f2;
+        --background: #180c0e;
+        --primary: #5b2e15;
+        --secondary: #371b1f;
+        --accent: #ab5967;
+        --success: #58c322;
+        --danger: #d41121;
+        --warning: #f7b722;
+
+        --card-bg: rgba(255, 255, 255, 0.03);
+        --hover-bg: rgba(255, 255, 255, 0.05);
+    }
+}
+
+:root {
+    --text: #562b31;
+    --background: #f3e7e9;
+    --primary: #eabca4;
+    --secondary: #e4c8cc;
+    --accent: #a65461;
+    --success: #81e052;
+    --danger: #ee2b3b;
+    --warning: #f9c753;
+
+    --card-bg: rgba(0, 0, 0, 0.03);
+    --hover-bg: rgba(0, 0, 0, 0.05);
+}
+
+:root.dark {
+    --text: #f8f1f2;
+    --background: #180c0e;
+    --primary: #5b2e15;
+    --secondary: #371b1f;
+    --accent: #ab5967;
+    --success: #58c322;
+    --danger: #d41121;
+    --warning: #f7b722;
+
+    --card-bg: rgba(255, 255, 255, 0.03);
+    --hover-bg: rgba(255, 255, 255, 0.05);
+}
+
+html {
+    font-family: 'Montserrat', sans-serif, Arial, Helvetica;
+    line-height: 1.15;
+    font-size: 100%;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    /* margin: 0; */
+}
+
+::-webkit-scrollbar {
+    width: 0.4rem;
+    height: 0.4rem;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 0.4rem 0.4rem;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #d1d1d8;
+    border-radius: 100vw;
+}
+
+::-webkit-scrollbar-corner,
+::-webkit-scrollbar-button {
+    display: none;
+}
+
+html,
+body,
+#__nuxt,
+#__layout {
+    margin: 0;
+    padding: 0;
+
+    font-family: 'Montserrat', sans-serif, Arial, Helvetica;
+
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.75;
+
+    text-align: left;
+    color: var(--text);
+    background: var(--background);
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    min-width: 100%;
+
+    height: 100%;
+    width: 100%;
+
+    scrollbar-color: var(--primary) transparent;
+    scrollbar-width: auto;
+
+    overflow: hidden;
+    /* .nuxt-devtools-panel,
+	.nuxt-devtools-glowing,
+	.Vue-Toastification__container {
+		display: none !important;
+	} */
+}
+
+@media print {
+    .nuxt-devtools-panel,
+    .nuxt-devtools-glowing,
+    .Vue-Toastification__container {
+        display: none !important;
+    }
+
+    * {
+        overflow: visible !important;
+    }
+
+    @page {
+        size: A4;
+        margin: 0;
+    }
+
+    .page:not(:last-child) {
+        page-break-after: always;
+    }
+
+    .page {
+        margin: 0 !important;
+    }
+}
+
+@media screen and (max-width: 640px) {
+    ::-webkit-scrollbar {
+        -webkit-appearance: none !important;
+        width: 0px !important;
+    }
+}
+
+#__nuxt {
+    display: flex;
+    flex-wrap: nowrap;
+}

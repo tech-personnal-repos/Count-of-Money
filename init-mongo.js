@@ -1,11 +1,9 @@
-console.log(`user: ${process.env.MONGO_INITDB_ROOT_USERNAME}`)
-console.log(`pws: ${process.env.MONGO_INITDB_ROOT_PASSWORD}`)
-console.log(`db: ${process.env.MONGO_INITDB_DATABASE}`)
+console.log(`user -> ${process.env.MONGO_USERNAME}`)
 db.createCollection(process.env.MONGO_INITDB_DATABASE);
 db.createUser(
     {
-        user: process.env.MONGO_INITDB_ROOT_USERNAME,
-        pwd: process.env.MONGO_INITDB_ROOT_PASSWORD,
+        user: process.env.MONGO_USERNAME,
+        pwd: process.env.MONGO_PASSWORD,
         roles: [
             {
                 role: "readWrite",

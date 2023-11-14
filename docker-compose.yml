@@ -1,13 +1,5 @@
 version: '3'
 
-secrets:
-  mongo_username:
-    environment: MONGO_INITDB_ROOT_USERNAME
-  mongo_password:
-    environment: MONGO_INITDB_ROOT_PASSWORD
-  db_uri:
-    environment: DB_URI
-
 services:
   db:
     container_name: count-money-mongo
@@ -18,6 +10,8 @@ services:
       MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_USERNAME: ${MONGO_USERNAME}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
     healthcheck:
       test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/${MONGO_INITDB_DATABASE} --quiet
       start_period: 15s
@@ -36,11 +30,8 @@ services:
     container_name: count-money-api
     restart: always
     environment:
-      MONGO_HOST: ${DB_HOST}
-      MONGO_PORT: ${DB_PORT}
-      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
       DB_NAME: ${MONGO_INITDB_DATABASE}
-      DB_URI: mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@db:${DB_PORT}
+      DB_URI: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${DB_HOST}:${DB_PORT}/${MONGO_INITDB_DATABASE}
     networks:
       - back-tier
     ports:

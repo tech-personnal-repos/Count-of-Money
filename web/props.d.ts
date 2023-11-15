@@ -1,20 +1,17 @@
 type CssColors =
+    | 'var(--text)'
+    | 'var(--background)'
     | 'var(--primary)'
     | 'var(--secondary)'
-    | 'var(--blue)'
-    | 'var(--blue-light)'
-    | 'var(--gold)'
-    | 'var(--gold-light)'
-    | 'var(--gold-light-2)'
-    | 'var(--light-1)'
-    | 'var(--light-2)'
-    | 'var(--light-3)'
-    | 'var(--brown)'
-    | 'var(--brown-light)'
-    | 'var(--dark)'
-    | 'var(--green)'
-    | 'var(--orange)'
-    | 'var(--red)';
+    | 'var(--accent)'
+    | 'var(--success)'
+    | 'var(--warning)'
+    | 'var(--danger)'
+    | 'var(--success)'
+    | 'var(--warning)'
+    | 'var(--danger)'
+    | 'white'
+    | 'black';
 
 type Variants =
     | 'none'

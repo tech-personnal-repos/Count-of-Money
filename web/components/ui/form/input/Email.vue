@@ -3,7 +3,12 @@
         type="email"
         v-bind="{ ...$attrs, class: '', style: '' }"
         class="rounded-xl p-0.5 pl-2 text-xl"
-        :style="`--color: ${color}; --focus: ${focusColor};`"
+        :style="{
+            '--bg-color': bgColor,
+            '--outline-color': outlineColor,
+            '--focus': focusOutlineColor,
+            '--font-color': fontColor
+        }"
         :modelValue="modelValue"
         @input="manageInput"
         @change="manageChange"
@@ -16,25 +21,32 @@ defineProps({
         type: String,
         required: true
     },
-
-    color: {
-        type: String,
-        default: 'var(--primary)'
-    },
-    focusColor: {
-        type: String,
-        default: 'var(--accent)'
-    },
-
     autocomplete: {
         type: String as PropType<AutoComplete>,
         default: 'off'
+    },
+
+    bgColor: {
+        type: String as PropType<CssColors>,
+        default: 'white'
+    },
+    outlineColor: {
+        type: String as PropType<CssColors>,
+        default: 'var(--primary)'
+    },
+    focusOutlineColor: {
+        type: String as PropType<CssColors>,
+        default: 'var(--accent)'
+    },
+    fontColor: {
+        type: String as PropType<CssColors>,
+        default: 'var(--text)'
     }
 });
 
 const emits = defineEmits<{
-    (event: 'update:modelValue', value: string): void;
-    (event: 'change:modelValue', value: string): void;
+    (e: 'update:modelValue', value: string): void;
+    (e: 'change:modelValue', value: string): void;
 }>();
 
 function manageInput(event: Event) {
@@ -54,13 +66,17 @@ input {
         outline: 1.2px solid var(--focus);
     }
 
-    outline: 1.2px solid var(--color);
+    outline: 1.2px solid var(--outline-color);
     outline-offset: -1px;
-    background: var(--input-background, white);
+    background: var(--bg-color, white);
 
-    &.isDisabled {
-        background-color: var(--disabled-bg-color, var(--color));
-        outline-color: var(--disabled-outline-color, var(--color));
+    &::placeholder {
+        color: var(--outline-color);
+    }
+
+    &:disabled {
+        background-color: var(--disabled-bg-color, var(--outline-color));
+        outline-color: var(--disabled-outline-color, var(--outline-color));
         color: var(--disabled-font-color, white);
     }
 }

@@ -1,7 +1,7 @@
 <template>
     <component
         :is="component"
-        v-bind="{ ...$attrs }"
+        v-bind="$attrs"
         :modelValue="modelValue"
         @update:modelValue="emits('update:modelValue', $event)"
         @change:modelValue="emits('change:modelValue', $event)"
@@ -21,6 +21,19 @@ const props = defineProps({
     autocomplete: {
         type: String as PropType<AutoComplete>,
         default: 'off'
+    },
+
+    bgColor: {
+        type: String as PropType<CssColors>,
+        default: 'white'
+    },
+    outlineColor: {
+        type: String as PropType<CssColors>,
+        default: 'var(--primary)'
+    },
+    focusOutlineColor: {
+        type: String as PropType<CssColors>,
+        default: 'var(--accent)'
     }
 });
 
@@ -30,8 +43,8 @@ const component = computed(() => {
             return resolveComponent('UiFormInputText');
         case 'email':
             return resolveComponent('UiFormInputEmail');
-        // case "password":
-        //     return Password;
+        case 'password':
+            return resolveComponent('UiFormInputPassword');
         case 'number':
             return resolveComponent('UiFormInputNumber');
         // case "tel":
@@ -84,5 +97,3 @@ const emits = defineEmits<{
     (e: 'change:modelValue', value: string | number): void;
 }>();
 </script>
-
-<style lang="scss" scoped></style>

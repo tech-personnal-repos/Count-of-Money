@@ -1,7 +1,9 @@
 <template>
     <header></header>
-    <main class="h-screen w-full">
-        <slot />
+    <main class="flex-1 flex">
+        <div class="flex-1 h-screen">
+            <slot />
+        </div>
     </main>
 </template>
 

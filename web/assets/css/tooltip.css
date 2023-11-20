@@ -1,8 +1,8 @@
 .v-popper__inner {
-	background: var(--light-1) !important;
-	border: 1px solid var(--gold) !important;
+	background: var(--background) !important;
+	border: 1px solid var(--accent) !important;
 
-	color: var(--primary) !important;
+	color: var(--text) !important;
 
 	font-family: Montserrat !important;
 	font-size: 0.625rem !important;

@@ -85,5 +85,5 @@ type Inputs =
     | 'date'
     | 'time'
     | 'url'
-    | 'search'
+    | 'select'
     | 'textarea';

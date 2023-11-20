@@ -61,7 +61,7 @@ const component = computed(() => {
         // case "url":
         //     return Url;
         // case "search":
-        //     return Search;
+        //     return resolveComponent('UiFormInputSearch');
         // case "date":
         //     return Date;
         // case "datetime-local":
@@ -92,8 +92,8 @@ const component = computed(() => {
         //     return Checkbox;
         // case "radio":
         //     return Radio;
-        // case "select":
-        //     return Select;
+        case "select":
+            return resolveComponent('UiFormInputSelect');
         // case "textarea":
         //     return Textarea;
         default:

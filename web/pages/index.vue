@@ -3,6 +3,7 @@
         <form @submit.prevent="login" class="flex-col justify-center items-center gap-2">
             <UiFormInputWithTitle
                 v-model="username"
+                class="w-[15rem]"
                 title="Username or Email"
                 type="text"
                 autocomplete="username"
@@ -10,13 +11,14 @@
             />
             <UiFormInputWithTitle
                 v-model="password"
+                class="w-[15rem]"
                 title="Password"
                 type="password"
                 autocomplete="current-password"
                 required
             />
             <div class="flex justify-center">
-                <UiFormButton type="submit" class="mt-2"> Login </UiFormButton>
+                <UiFormButton type="submit" class="w-40"> Sign in </UiFormButton>
             </div>
         </form>
     </div>

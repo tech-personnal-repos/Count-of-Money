@@ -1,0 +1,21 @@
+<template>
+  <svg
+      width="46"
+      height="46"
+      fill="none"
+      :stroke="color"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      viewBox="0 0 24 24"
+  >
+    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+    <path d="M12 9a3 3 0 1 0 0 6 3 3 0 1 0 0-6z"></path>
+  </svg>
+</template>
+<script setup lang="ts">
+const { color } = defineProps({
+    color: { type: String, default: 'var(--accent)' }
+});
+</script>
+

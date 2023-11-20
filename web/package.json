@@ -29,7 +29,7 @@
 		"@vueup/vue-quill": "^1.2.0",
 		"chart.js": "^4.4.0",
 		"floating-vue": "2.0.0-beta.24",
-		"jwt-decode": "^3.1.2",
+    "jwt-decode": "^4.0.0",
 		"patternomaly": "^1.3.2",
 		"pinia": "^2.1.7",
 		"vue-chartjs": "^5.2.0",

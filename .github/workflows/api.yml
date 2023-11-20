@@ -18,11 +18,11 @@ jobs:
       postgres:
         image: mongo
         env:
-          MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
-          MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
-          MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-          MONGO_USERNAME: ${MONGO_USERNAME}
-          MONGO_PASSWORD: ${MONGO_PASSWORD}
+          MONGO_INITDB_DATABASE: workflow_database
+          MONGO_INITDB_ROOT_USERNAME: workflow_root
+          MONGO_INITDB_ROOT_PASSWORD: workflow_password
+          MONGO_USERNAME: workflow_project_user
+          MONGO_PASSWORD: workflow_project_password
         ports:
           - 27017:27017
         options: >-

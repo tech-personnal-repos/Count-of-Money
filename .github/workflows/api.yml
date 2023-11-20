@@ -16,7 +16,7 @@ jobs:
 
     services:
       db:
-        image: mongo
+        image: mongo:latest
         env:
           MONGO_INITDB_DATABASE: workflow_database
           MONGO_INITDB_ROOT_USERNAME: workflow_root

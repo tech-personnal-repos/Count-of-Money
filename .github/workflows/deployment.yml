@@ -2,7 +2,7 @@ name: deploy
 
 on:
   workflow_run:
-    workflows: [ "web" ]
+    workflows: [ "front" ]
     branches:
       - main
     types:

@@ -1,8 +1,13 @@
 <template>
     <component
         :is="component"
-        v-bind="$attrs"
+        v-bind="{ ...$attrs }"
         :modelValue="modelValue"
+        :autocomplete="autocomplete"
+        :bgColor="bgColor"
+        :outlineColor="outlineColor"
+        :focusOutlineColor="focusOutlineColor"
+        :fontColor="fontColor"
         @update:modelValue="emits('update:modelValue', $event)"
         @change:modelValue="emits('change:modelValue', $event)"
     />
@@ -34,6 +39,10 @@ const props = defineProps({
     focusOutlineColor: {
         type: String as PropType<CssColors>,
         default: 'var(--accent)'
+    },
+    fontColor: {
+        type: String as PropType<CssColors>,
+        default: 'var(--text)'
     }
 });
 

@@ -10,6 +10,7 @@
             '--font-color': fontColor
         }"
         :modelValue="modelValue"
+            :autocomplete="autocomplete"
         @input="manageInput"
         @change="manageChange"
     />
@@ -69,6 +70,7 @@ input {
     outline: 1.2px solid var(--outline-color);
     outline-offset: -1px;
     background: var(--bg-color, white);
+    color: var(--font-color);
 
     &::placeholder {
         color: var(--outline-color);

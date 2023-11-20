@@ -2,13 +2,14 @@
     <input
         type="text"
         v-bind="{ ...$attrs, class: '', style: '' }"
-        class="rounded-xl p-0.5 pl-2 text-xl"
+        class="rounded-xl p-1.5 pl-2 font-h4"
         :style="{
             '--bg-color': bgColor,
             '--outline-color': outlineColor,
             '--focus': focusOutlineColor,
             '--font-color': fontColor
         }"
+        :autocomplete="autocomplete"
         @input="manageInput"
         @change="manageChange"
     />

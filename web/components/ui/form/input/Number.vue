@@ -8,7 +8,9 @@
             '--outline-color': outlineColor,
             '--focus': focusOutlineColor,
             '--font-color': fontColor
-        }"        @input="manageInput"
+        }"
+        :autocomplete="autocomplete"
+        @input="manageInput"
         @change="manageChange"
     />
 </template>

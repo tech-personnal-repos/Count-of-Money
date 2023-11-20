@@ -1,5 +1,6 @@
 <template>
-    <main>
+    <header></header>
+    <main class="h-screen w-full">
         <slot />
     </main>
 </template>

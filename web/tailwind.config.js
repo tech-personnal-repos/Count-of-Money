@@ -30,6 +30,10 @@ module.exports = {
     plugins: [
         function ({ addUtilities }) {
             addUtilities({
+                '.flex-col': {
+                    display: 'flex',
+                    flexDirection: 'column'
+                },
                 '.text-ellipsis': {
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',

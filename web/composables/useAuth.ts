@@ -1,5 +1,3 @@
-import type { Tokens } from '~/types';
-
 export interface AuthResponse {
 	access_token: string;
 	refresh_token: string;
@@ -19,8 +17,6 @@ export function setLoginState() {
 
 	const tokens = useState<Tokens>('tokens');
 	tokens.value = { accessToken: accessTokenCookie.value || null, refreshToken: refreshTokenCookie.value || null };
-
-	toggleSocketWithAccessToken(tokens.value.accessToken);
 
 	return Boolean(tokens.value.refreshToken);
 }
@@ -61,7 +57,6 @@ export function setTokenStates(tokens: Tokens | null) {
 	const state = useState<Tokens>('tokens');
 	state.value = { accessToken: tokens.accessToken, refreshToken: tokens.refreshToken };
 
-	toggleSocketWithAccessToken(state.value.accessToken);
 }
 
 export function disconnect() {
@@ -82,5 +77,4 @@ export function disconnect() {
 	const tokens = useState<Tokens>('tokens');
 	tokens.value = { accessToken: null, refreshToken: null };
 
-	toggleSocketWithAccessToken(tokens.value.accessToken);
 }

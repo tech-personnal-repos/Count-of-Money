@@ -1,7 +1,7 @@
 <template>
     <button
         v-bind="{ ...$attrs, class: '', style: '' }"
-        class="px-4 py-2 rounded-md font-h4"
+        class="p-1.5 rounded-xl font-h4"
         :disabled="disabled"
         :style="`--bg-color: ${bgColor}; --outline-color: ${outlineColor}; --font-color: ${fontColor};`"
     >
@@ -33,6 +33,8 @@ defineProps({
 
 <style lang="scss" scoped>
 button {
+    @apply relative h-min;
+	@apply shadow-sm;
     outline: 1.2px solid var(--outline-color);
     outline-offset: -1px;
     background: var(--bg-color);
@@ -59,9 +61,12 @@ button {
     &:disabled {
         cursor: not-allowed;
 
-        background-color: var(--disabled-bg-color, var(--outline-color));
-        outline-color: var(--disabled-outline-color, var(--outline-color));
-        color: var(--disabled-font-color, var(--font-color));
+		&::after {
+			@apply absolute inset-0 h-full w-full rounded-full;
+			content: '';
+
+			background: rgba(0 0 0 / 0.2);
+		}
     }
 }
 </style>

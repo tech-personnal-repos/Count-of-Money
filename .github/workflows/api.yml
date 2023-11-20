@@ -1,0 +1,50 @@
+name: api
+
+on:
+  push:
+    branches: [ "main", "dev", "**/dev", "devops/workflows" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./api
+
+    services:
+      postgres:
+        image: mongo
+        env:
+          MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+          MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+          MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+          MONGO_USERNAME: ${MONGO_USERNAME}
+          MONGO_PASSWORD: ${MONGO_PASSWORD}
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd echo 'db.runCommand("ping").ok' | mongosh localhost:27017/${MONGO_INITDB_DATABASE}
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: '**/web/package-lock.json'
+    - name: running npm ci
+      run: npm ci
+    - name: running build
+      run: npm run build --if-present

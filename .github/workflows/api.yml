@@ -15,7 +15,7 @@ jobs:
         working-directory: ./api
 
     services:
-      postgres:
+      db:
         image: mongo
         env:
           MONGO_INITDB_DATABASE: workflow_database

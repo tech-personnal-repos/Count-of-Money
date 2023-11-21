@@ -15,6 +15,7 @@
 .v-popper__arrow-outer {
 	/* border-color: var(--light-1) !important; */
 	border: none !important;
+	display: none !important;
 }
 
 .v-popper__arrow-inner {

@@ -5,7 +5,6 @@
         :disabled="disabled"
         :style="`--bg-color: ${bgColor}; --outline-color: ${outlineColor}; --font-color: ${fontColor};`"
     >
-    
         <slot />
     </button>
 </template>

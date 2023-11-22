@@ -85,7 +85,6 @@ const tmpSelectedOption = ref(null as SelectOption | null);
 
 function handleOptionClick(event: Event, option: SelectOption) {
     if (option?.disabled) return;
-
 	if (props.selectedOptions?.find(o => o.value === option.value)) {
 		if (props.isMultiple)
 		return emits('update:selectedOptions', props.selectedOptions.filter(o => o.value !== option.value));

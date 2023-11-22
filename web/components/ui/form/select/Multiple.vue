@@ -17,32 +17,39 @@
         }"
     >
         <div
-            class="select w-full overflow-y-auto relative p-1 !pl-2 min-h-[27px] font-h4"
+            class="select w-full overflow-y-auto relative p-[3.5px] !pl-2 min-h-[27px] font-h4"
             :class="{ disabled, focus: isOpen }"
             :style="{
                 maxHeight
             }"
             ref="input"
         >
-        <!-- <div class="absolute p-1 bg-white bg-opacity-80">
+            <!-- <div class="absolute p-1 bg-white bg-opacity-80">
             <template v-if="search">
                 {{ search }}
             </template>
         </div> -->
-        <div class="w-[calc(100%-0.75rem)] h-full flex flex-wrap gap-2">
-        <template v-for="option, index in selectedOption">
-            <div class="selected-element" >
-					<slot
-						:name="`option-${index}`"
-						:option="selectedOption"
-					>
-						{{ option.label || '' }}
-					</slot>
-                    <SvgClose class="h-4 w-4 ml-2" color="white" />
-                </div>
-            </template>
-        </div>
-
+            <div class="w-[calc(100%-0.75rem)] h-full flex flex-wrap gap-2">
+                <template v-for="(option, index) in selectedOption">
+                    <div class="selected-element max-w-[calc(100%-0.5rem)]">
+                        <div
+                            class="max-w-[calc(100%-1.5rem)] text-ellipsis"
+                        >
+                            <slot
+                                :name="`option-${index}`"
+                                :option="selectedOption"
+                            >
+                                {{ option.label || '' }}
+                            </slot>
+                        </div>
+                        <SvgClose
+                            class="h-4 w-4 ml-2"
+                            color="white"
+                            @click.stop="removeOption(option)"
+                        />
+                    </div>
+                </template>
+            </div>
         </div>
         <SvgArrowBottom
             v-if="!disabled"
@@ -125,7 +132,7 @@ const props = defineProps({
 });
 
 const emits = defineEmits<{
-    (e: 'update:modelValue', value: string | null): void;
+    (e: 'update:modelValue', value: string[]): void;
 }>();
 
 const select = ref();
@@ -149,23 +156,30 @@ const selectedOption = ref(
 
 const distance = ref(3);
 
-watch(() => selectedOption.value, () => {
-    if (!input.value) return;
-    distance.value = 4;
-    nextTick(() => {distance.value = 3;})
-}, {immediate:true, deep: true});
+watch(
+    () => selectedOption.value,
+    () => {
+        if (!input.value) return;
+        distance.value = 4;
+        nextTick(() => {
+            distance.value = 3;
+        });
+    },
+    { immediate: true, deep: true }
+);
 
 watch(
     () => props.modelValue,
     nValue => {
         selectedOption.value =
-		options.value.filter(o => nValue.includes(o.value)) || []
-    }, {deep: true}
+            options.value.filter(o => nValue.includes(o.value)) || [];
+    },
+    { deep: true }
 );
 
 const filteredOptions = computed(() => {
     if (!search.value || !options.value) return options.value;
-    return options.value
+    return options.value;
     const filtered = options.value.filter(
         o =>
             o.label.toLowerCase().includes(search.value.toLowerCase()) ||
@@ -182,7 +196,7 @@ const maxHeight = computed(() => {
     // maxRows === 1: 1 * 15 + 12 + 0 * 8
     // maxRows === 2: 1 * 15 + 12 + 1 * 8
     // maxRows === 2: 1 * 15 + 12 + 1 * 8
-    return `${props.maxRows * rowHeight + (props.maxRows - 1) * 8 + 8 }px`;
+    return `${props.maxRows * rowHeight + (props.maxRows - 1) * 8 + 7}px`;
 });
 
 const style = computed(() => {
@@ -196,8 +210,9 @@ defineExpose({
         isOpen.value = false;
 
         if (props.placeholder)
-            selectedOption.value =
-                [options.value.find(o => o.value === '')] as SelectOption[];
+            selectedOption.value = [
+                options.value.find(o => o.value === '')
+            ] as SelectOption[];
         else selectedOption.value = [];
     }
 });
@@ -212,17 +227,29 @@ watch(
         if (props.placeholder)
             options.value.unshift({ value: '', label: props.placeholder });
         selectedOption.value =
-		options.value.filter(o => props.modelValue.includes(o.value)) || []
-
+            options.value.filter(o => props.modelValue.includes(o.value)) || [];
     }
 );
 
-function selectOption(option: SelectOption[]) {
-    if (!option) return;
+function removeOption(option: SelectOption) {
+    selectedOption.value = selectedOption.value.filter(
+        o => o.value !== option.value
+    );
+    emits(
+        'update:modelValue',
+        selectedOption.value.map(o => o.value)
+    );
+}
 
-	selectedOption.value = option;
+function selectOption(options: SelectOption[]) {
+    console.log(options);
+    if (!options) return;
+    selectedOption.value = options;
 
-    emits('update:modelValue', option[0]?.value || null);
+    emits(
+        'update:modelValue',
+        selectedOption.value.map(o => o.value)
+    );
 }
 
 useClickOutside([select], () => {
@@ -243,11 +270,11 @@ useClickOutside([select], () => {
 
         transition: outline 100ms ease-in-out;
 
-		cursor: pointer;
+        cursor: pointer;
 
-		color: var(--font-color);
-		background-color: var(--bg-color) !important;
-		outline: 1.2px solid var(--outline-color);
+        color: var(--font-color);
+        background-color: var(--bg-color) !important;
+        outline: 1.2px solid var(--outline-color);
 
         &.focus {
             outline: 1.2px solid var(--focus);

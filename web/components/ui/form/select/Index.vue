@@ -7,7 +7,7 @@
         :triggers="[]"
         :shown="!absolute && isOpen"
         :autoHide="false"
-		:distance="3"
+        :distance="3"
         :style="{
             style,
             '--bg-color': bgColor,
@@ -16,10 +16,7 @@
             '--font-color': fontColor
         }"
     >
-        <div
-            class="select w-full"
-            :class="{ disabled, focus: isOpen }"
-        >
+        <div class="select w-full" :class="{ disabled, focus: isOpen }">
             <div class="selected-element" :class="align">
                 <template v-if="search">
                     {{ search }}
@@ -48,7 +45,7 @@
                 v-model:search="search"
                 v-close-popper
                 @update:selectedOptions="selectOption"
-                :selectedOptions="selectedOption ? [selectedOption]: []"
+                :selectedOptions="selectedOption ? [selectedOption] : []"
                 :hasPlaceholder="Boolean(placeholder)"
                 :align="align"
                 :options="filteredOptions"
@@ -67,7 +64,7 @@
                 :style="`width: ${selectSize}`"
                 v-model:search="search"
                 @update:selectedOptions="selectOption"
-                :selectedOptions="selectedOption ? [selectedOption]: []"
+                :selectedOptions="selectedOption ? [selectedOption] : []"
                 :hasPlaceholder="Boolean(placeholder)"
                 :align="align"
                 :options="filteredOptions"
@@ -135,17 +132,18 @@ const selectedOption = ref(
 watch(
     () => props.modelValue,
     nValue => {
-        selectedOption.value =
-            options.value.find(o => o.value === nValue);
+        selectedOption.value = options.value.find(o => o.value === nValue);
     }
 );
 
 const filteredOptions = computed(() => {
     if (!search.value || !options.value) return options.value;
+
     const filtered = options.value.filter(
         o =>
-            o.label.toLowerCase().includes(search.value.toLowerCase()) ||
-            !o.value?.length
+            toCaseInsensitive(o.label).includes(
+                toCaseInsensitive(search.value)
+            ) || !o.value?.length
     );
     return filtered;
 });
@@ -161,8 +159,7 @@ defineExpose({
         isOpen.value = false;
 
         if (props.placeholder)
-            selectedOption.value =
-                options.value.find(o => o.value === '');
+            selectedOption.value = options.value.find(o => o.value === '');
         else selectedOption.value = undefined;
     }
 });
@@ -176,15 +173,15 @@ watch(
         }));
         if (props.placeholder)
             options.value.unshift({ value: '', label: props.placeholder });
-        selectedOption.value =
-            options.value.find(o => o.value === props.modelValue);
+        selectedOption.value = options.value.find(
+            o => o.value === props.modelValue
+        );
     }
 );
 
 function selectOption(options: SelectOption[]) {
     if (!options) return;
 
-	console.log(options);
     search.value = '';
     isOpen.value = false;
     selectedOption.value = options.at(0);
@@ -211,11 +208,11 @@ useClickOutside([select], () => {
 
         transition: outline 100ms ease-in-out;
 
-		cursor: pointer;
+        cursor: pointer;
 
-		color: var(--font-color);
-		background-color: var(--bg-color) !important;
-		outline: 1.2px solid var(--outline-color);
+        color: var(--font-color);
+        background-color: var(--bg-color) !important;
+        outline: 1.2px solid var(--outline-color);
 
         &.focus {
             outline: 1.2px solid var(--focus);

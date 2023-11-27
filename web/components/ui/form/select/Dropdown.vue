@@ -2,7 +2,7 @@
     <TransitionGroup
         name="list"
         tag="ul"
-        class="options select-none v-popper__select-search-options"
+        class="options select-none v-popper__select-search-options  overflow-auto h-[11rem]"
         :class="{ placeholder: hasPlaceholder, [variant]: Boolean(variant) }"
         :style="{
             '--bg-color': bgColor,
@@ -42,6 +42,7 @@
 const emits = defineEmits<{
     (e: 'update:selectedOptions', value: SelectOption[]): void;
     (e: 'update:search', value: string): void;
+    (e: 'esc'): void;
 }>();
 
 const props = defineProps({
@@ -96,108 +97,99 @@ function handleOptionClick(event: Event, option: SelectOption) {
 }
 
 function handleArrowKeys(key: 'ArrowUp' | 'ArrowDown') {
-    if (props.options.length === 0) return;
-    if (!tmpSelectedOption.value) {
-        if (props.selectedOptions?.length)
-            tmpSelectedOption.value = props.selectedOptions[0];
-        else return (tmpSelectedOption.value = props.options[0]);
-    }
+	if (props.options.length === 0) return;
 
-    const index = props.options.findIndex(
-        o => o.value === tmpSelectedOption.value?.value
-    );
-    if (index === -1) return;
+	if (!tmpSelectedOption.value || !props.options.find(o => tmpSelectedOption.value?.value === o.value)) {
+		if (props.selectedOptions?.length) {
+			tmpSelectedOption.value = null;
+			for (const t of props.selectedOptions) {
+				const index = props.options.findIndex(o => o.value === t.value);
+				if (index !== -1) (tmpSelectedOption.value = props.options[index]);
+			}
+			if (!tmpSelectedOption.value) (tmpSelectedOption.value = props.options[0]);
+		} else return (tmpSelectedOption.value = props.options[0]);
+	}
 
-    let optionIndex: number;
+	const index = props.options.findIndex(o => o.value === tmpSelectedOption.value?.value);
+	if (index === -1) return;
 
-    if (index === 0 && key === 'ArrowUp')
-        optionIndex = props.options.length - 1;
-    else if (index === props.options.length - 1 && key === 'ArrowDown')
-        optionIndex = 0;
-    else optionIndex = index + (key === 'ArrowUp' ? -1 : 1);
+	let optionIndex: number;
 
-    tmpSelectedOption.value = props.options.at(optionIndex) || null;
+	if (index === 0 && key === 'ArrowUp') optionIndex = props.options.length - 1;
+	else if (index === props.options.length - 1 && key === 'ArrowDown') optionIndex = 0;
+	else optionIndex = index + (key === 'ArrowUp' ? -1 : 1);
 
-    const element = document.getElementById(`option-${optionIndex}`);
-    element?.scrollIntoView({
-        block: 'nearest',
-        inline: 'nearest',
-        behavior: 'instant'
-    });
-}
+	tmpSelectedOption.value = props.options.at(optionIndex) || null;
 
-function handleKeyUpEvent(event: KeyboardEvent) {
-    if (event.key === 'Control') isControlPressed = false;
+	const element = document.getElementById(`option-${optionIndex}`);
+	element?.scrollIntoView({
+		block: 'nearest',
+		inline: 'nearest',
+		behavior: 'instant'
+	});
 }
 
 function handleKeyDownEvent(event: KeyboardEvent) {
-    if (event.key === 'Control') return (isControlPressed = true);
+	event.preventDefault();
 
-    switch (event.key) {
-        case 'Enter':
-            if (props.options.length === 0) return;
+	switch (event.key) {
+		case 'Enter':
+			if (props.options.length === 0) return;
 			return handleOptionClick(event as Event, tmpSelectedOption.value!);
 
-        case 'Escape':
-            tmpSelectedOption.value = null;
-            return emits('update:selectedOptions', props.selectedOptions);
+		case 'Escape':
+			tmpSelectedOption.value = null;
+			return emits('update:selectedOptions', props.selectedOptions);
 
-        case 'Backspace':
-            if (isControlPressed) {
-                event.preventDefault();
-                return emits('update:search', '');
-            }
+		case 'Backspace':
+			if ((event.ctrlKey && !navigator.userAgent.includes('Mac OS X')) || event.metaKey) {
+				event.preventDefault();
+				return emits('update:search', '');
+			}
 
-            return emits('update:search', props.search.slice(0, -1));
+			return emits('update:search', props.search.slice(0, -1));
 
-        case 'ArrowUp':
-        case 'ArrowDown':
-            return handleArrowKeys(event.key);
-    }
+		case 'ArrowUp':
+		case 'ArrowDown':
+			return handleArrowKeys(event.key);
+	}
 
-    if (event.key.length !== 1) return;
+	if (event.key.length !== 1) return;
 
-    emits('update:search', `${props.search}${event.key}`);
+	emits('update:search', `${props.search}${event.key}`);
 }
 
 function handleScrollEvent(e: Event) {
-    if (
-        (e.target as Element).closest('.v-popper__inner') ||
-        (e.target as Element).closest('.absolute-select__inner')
-    ) {
-        return;
-    }
+	if ((e.target as Element).closest('.v-popper__inner') || (e.target as Element).closest('.absolute-select__inner')) {
+		return;
+	}
 
-    emits('update:selectedOptions', props.selectedOptions);
+	emits('update:selectedOptions', props.selectedOptions);
 }
 
 onMounted(() => {
-    window.addEventListener('scroll', handleScrollEvent, true);
+	window.addEventListener('scroll', handleScrollEvent, true);
 
-    window.addEventListener('keydown', handleKeyDownEvent);
-    window.addEventListener('keyup', handleKeyUpEvent);
+	window.addEventListener('keydown', handleKeyDownEvent);
 
-    setTimeout(() => {
-        if (!props.selectedOptions?.length) return;
+	setTimeout(() => {
+		if (!props.selectedOptions?.length) return;
 
-        const index = props.options.findIndex(
-            o => o.value === props.selectedOptions[0]!.value
-        );
-        if (index === -1) return;
+		const index = props.options.findIndex(o => o.value === props.selectedOptions[0]!.value);
+		if (index === -1) return;
 
-        const element = document.getElementById(`option-${index}`);
-        element?.scrollIntoView({
-            block: 'nearest',
-            inline: 'nearest',
-            behavior: 'smooth'
-        });
-    }, 50);
+		const element = document.getElementById(`option-${index}`);
+		element?.scrollIntoView({
+			block: 'nearest',
+			inline: 'nearest',
+			behavior: 'smooth'
+		});
+	}, 50);
 });
 
 onBeforeUnmount(() => {
     window.removeEventListener('scroll', handleScrollEvent);
     window.removeEventListener('keydown', handleKeyDownEvent);
-    window.removeEventListener('keyup', handleKeyUpEvent);
 });
 </script>
 
@@ -245,6 +237,7 @@ onBeforeUnmount(() => {
     overflow-y: auto !important;
     overflow-x: hidden !important;
     max-height: 12rem !important;
+	border: 1px solid var(--accent) !important;
 
     border-bottom-right-radius: 0.75rem !important;
     border-bottom-left-radius: 0.75rem !important;

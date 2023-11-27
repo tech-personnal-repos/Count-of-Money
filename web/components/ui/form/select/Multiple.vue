@@ -64,6 +64,7 @@
                 v-model:search="search"
                 v-close-popper
                 @update:selectedOptions="selectOption"
+                @esc="isOpen = false"
                 :selectedOptions="selectedOption"
                 :hasPlaceholder="Boolean(placeholder)"
                 :align="align"
@@ -84,6 +85,7 @@
                 :style="`width: ${selectSize}`"
                 v-model:search="search"
                 @update:selectedOptions="selectOption"
+                @esc="isOpen = false"
                 :selectedOptions="selectedOption"
                 :hasPlaceholder="Boolean(placeholder)"
                 :align="align"
@@ -140,7 +142,7 @@ const input = ref();
 
 const selectSize = computed(() => {
     const size = select.value?.$el?.getBoundingClientRect()?.width;
-    return size ? `${size - 5}px` : null;
+    return size ? `${size - 10}px` : null;
 });
 
 const search = ref('');
@@ -242,7 +244,7 @@ function removeOption(option: SelectOption) {
 }
 
 function selectOption(options: SelectOption[]) {
-    console.log(options);
+    // console.log(options);
     if (!options) return;
     selectedOption.value = options;
 

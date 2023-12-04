@@ -11,7 +11,7 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  on-success:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     defaults:
@@ -28,6 +28,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        cache-dependency-path: '**/web/package-lock.json'
     - name: running npm ci
       run: npm ci
     - name: running build

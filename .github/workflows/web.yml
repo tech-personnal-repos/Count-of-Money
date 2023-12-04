@@ -6,12 +6,15 @@ on:
     branches: [ "main", "dev", "**/dev", "devops/workflows" ]
     types:
       - completed
+  push:
+    branches:
+      - devops/workflows
 
 permissions:
   contents: read
 
 jobs:
-  runner-job:
+  build:
     # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 

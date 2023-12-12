@@ -8,13 +8,14 @@
             '--font-color': fontColor
         }"
         :class="{ focus: isFocus }"
-        class="rounded-xl flex h-[26.5px]"
+        class="rounded-xl flex h-min"
     >
         <input
+            ref="input"
             :type="isHide ? 'password' : 'text'"
             v-bind="{
                 ...$attrs,
-                class: 'rounded-xl p-1.5 pl-2 font-h4',
+                class: 'rounded-xl p-1.5 pl-2 font-h4 flex-1',
                 style: ''
             }"
             :id="id"
@@ -25,7 +26,12 @@
             @focus="isFocus = true"
             @blur="isFocus = false"
         />
-        <div @click="isHide = !isHide" class="p-1 mr-0.5 h-full">
+        <div
+            @click="isHide = !isHide"
+            class="p-1 mr-0.5 ml-auto "
+            :style="{ height: svgHeight + 'px', width: svgHeight + 'px' }"
+            ref="svg"
+        >
             <SvgEye v-if="!isHide" class="h-full w-full" />
             <SvgEyeSlash v-else class="h-full w-full" />
         </div>
@@ -47,7 +53,6 @@ defineProps({
         type: String as PropType<AutoComplete>,
         default: 'off'
     },
-
     size: {
         type: Number,
         default: 20
@@ -73,6 +78,17 @@ defineProps({
 
 const isHide = ref(true);
 const isFocus = ref(false);
+const input = ref();
+const svgHeight = ref(0);
+
+watch(
+    () => input.value,
+    () => {
+        if (!input.value) return;
+        svgHeight.value = input.value.getBoundingClientRect().height;
+    },
+    { deep: true, immediate: true }
+);
 
 const emits = defineEmits<{
     (event: 'update:modelValue', value: string): void;

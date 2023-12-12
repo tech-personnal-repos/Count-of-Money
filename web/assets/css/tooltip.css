@@ -1,8 +1,8 @@
 .v-popper__inner {
-	background: var(--light-1) !important;
-	border: 1px solid var(--gold) !important;
+	background: var(--background) !important;
+	border: none !important;
 
-	color: var(--primary) !important;
+	color: var(--text) !important;
 
 	font-family: Montserrat !important;
 	font-size: 0.625rem !important;
@@ -12,12 +12,21 @@
 	letter-spacing: 0.3px !important;
 }
 
+
+.v-popper--theme-tooltip .v-popper__inner {
+	border: 1px solid var(--gold) !important;
+}
+
 .v-popper__arrow-outer {
 	/* border-color: var(--light-1) !important; */
-	border: none !important;
+	display: none !important;
 }
 
 .v-popper__arrow-inner {
 	/* border-color: var(--light-1) !important; */
-	border: none !important;
+	display: none !important;
+}
+
+.v-popper__arrow-container{
+	display: none !important;
 }

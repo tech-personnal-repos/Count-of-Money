@@ -16,8 +16,9 @@ module.exports = {
                 primary: 'var(--primary)',
                 secondary: 'var(--secondary)',
                 accent: 'var(--accent)',
+                'accent-15': 'var(--accent-15)',
                 green: 'var(--success)',
-                yellow: 'var(--warning)',
+                orange: 'var(--warning)',
                 red: 'var(--danger)',
                 success: 'var(--success)',
                 warning: 'var(--warning)',
@@ -25,15 +26,16 @@ module.exports = {
                 'card-color': 'var(--card-bg)',
                 hover: 'var(--hover-bg)'
             },
+            borderRadius: {
+                '4xl': {
+                    borderRadius: '1.875rem'
+                }
+            }
         }
     },
     plugins: [
         function ({ addUtilities }) {
             addUtilities({
-                '.flex-col': {
-                    display: 'flex',
-                    flexDirection: 'column'
-                },
                 '.text-ellipsis': {
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
@@ -64,113 +66,87 @@ module.exports = {
                     justifyContent: 'center',
                     alignItems: 'center'
                 },
+
                 '.font-h1': {
-                    fontFamily: 'Montserrat',
-                    fontStyle: 'normal',
-
-                    fontWeight: 900,
-                    fontSize: '1.875rem',
-
-                    lineHeight: '2.313rem',
-                    letterSpacing: '0.05em'
+                    'font-family': 'Baloo Da 2',
+                    'font-size': '67px',
+                    'font-weight': 700,
+                    'line-height': 'normal',
+                    'letter-spacing': 0
                 },
 
                 '.font-h2': {
-                    fontFamily: 'Montserrat',
-                    fontStyle: 'normal',
-
-                    fontWeight: 700,
-                    fontSize: '1.125rem',
-
-                    lineHeight: '1.375rem',
-                    letterSpacing: '0.05em'
+                    'font-family': 'Baloo Da 2',
+                    'font-size': '51px',
+                    'font-weight': 700,
+                    'line-height': 'normal',
+                    'letter-spacing': 0
                 },
 
                 '.font-h3': {
-                    fontFamily: 'Montserrat',
-                    fontStyle: 'normal',
-
-                    fontWeight: 700,
-                    fontSize: '0.938rem',
-
-                    lineHeight: '1.125rem',
-                    letterSpacing: '0.04em'
+                    'font-family': 'Baloo Da 2',
+                    'font-size': '38px',
+                    'font-weight': 700,
+                    'line-height': 'normal',
+                    'letter-spacing': 0
                 },
 
                 '.font-h4': {
-                    fontFamily: 'Montserrat',
-                    fontStyle: 'normal',
-
-                    fontWeight: 700,
-                    fontSize: '0.75rem',
-
-                    lineHeight: '0.938rem',
-                    letterSpacing: '0.05em'
+                    'font-family': 'Baloo Da 2',
+                    'font-size': '29px',
+                    'font-weight': 700,
+                    'line-height': 'normal',
+                    'letter-spacing': 0
                 },
 
                 '.font-h5': {
-                    fontFamily: 'Montserrat',
-                    fontStyle: 'normal',
-
-                    fontWeight: 400,
-                    fontSize: '0.65rem',
-
-                    lineHeight: '0.938rem',
-                    letterSpacing: '0.03em'
+                    'font-family': 'Baloo Da 2',
+                    'font-size': '21px',
+                    'font-weight': 700,
+                    'line-height': 'normal',
+                    'letter-spacing': 0
                 },
 
                 '.font-legend': {
-                    fontFamily: 'Montserrat',
-                    fontStyle: 'normal',
-
-                    fontWeight: 400,
-                    fontSize: '0.625rem',
-
-                    lineHeight: '0.625rem'
+                    'font-family': 'Baloo Da 2',
+                    'font-size': '12px',
+                    'font-weight': 400,
+                    'line-height': 'normal',
+                    'letter-spacing': 0
                 },
 
                 '.font-legendb': {
-                    fontFamily: 'Montserrat',
-                    fontStyle: 'normal',
-
-                    fontWeight: 700,
-                    fontSize: '0.625rem',
-
-                    lineHeight: '0.75rem',
-                    letterSpacing: '2%'
+                    'font-family': 'Baloo Da 2',
+                    'font-size': '12px',
+                    'font-weight': 700,
+                    'line-height': 'normal',
+                    'letter-spacing': 0
                 },
 
                 '.font-m1': {
-                    fontFamily: 'Montserrat',
+                    fontFamily: 'Baloo Da 2',
                     fontStyle: 'normal',
 
                     fontWeight: 400,
-                    fontSize: '0.75rem',
+                    fontSize: '16px',
 
-                    lineHeight: '0.938rem',
-                    letterSpacing: '0.03em'
+                    lineHeight: 'normal',
+                    letterSpacing: 0
                 },
 
                 '.font-mb1': {
-                    fontFamily: 'Montserrat',
+                    fontFamily: 'Baloo Da 2',
                     fontStyle: 'normal',
 
-                    fontWeight: 600,
-                    fontSize: '0.75rem',
+                    fontWeight: 700,
+                    fontSize: '16px',
 
-                    lineHeight: '0.938rem',
-                    letterSpacing: '0.03em'
+                    lineHeight: 'normal',
+                    letterSpacing: 0
                 },
-
-                '.font-m2': {
-                    fontFamily: 'Montserrat',
-                    fontStyle: 'normal',
-
-                    fontWeight: 500,
-                    fontSize: '0.625rem',
-
-                    lineHeight: '0.75rem',
-                    letterSpacing: '0.03em'
+                '.card': {
+                    'box-shadow': '1px 2px 8px 0px rgba(0, 0, 0, 0.25)',
+                    'border-radius': '1.875rem'
                 }
             });
         }

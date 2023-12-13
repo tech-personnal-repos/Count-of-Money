@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Baloo Da 2:wght@400;500;600;700;900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -36,11 +36,12 @@
 }
 
 :root {
-    --text: #562b31;
-    --background: #f3e7e9;
-    --primary: #eabca4;
-    --secondary: #e4c8cc;
-    --accent: #a65461;
+    --text: #220022;
+    --background: #FFFFFF;
+    --primary: #4F0868;
+    --secondary: #F4DCFF;
+    --accent: #8F1BBA;
+    --accent-15: rgba(143, 27, 186, 0.15);
     --success: #81e052;
     --danger: #ee2b3b;
     --warning: #f9c753;
@@ -64,7 +65,7 @@
 }
 
 html {
-    font-family: 'Montserrat', sans-serif, Arial, Helvetica;
+    font-family: 'Baloo Da 2', sans-serif, Arial, Helvetica;
     line-height: 1.15;
     font-size: 100%;
     -webkit-text-size-adjust: 100%;
@@ -108,7 +109,7 @@ body,
     margin: 0;
     padding: 0;
 
-    font-family: 'Montserrat', sans-serif, Arial, Helvetica;
+    font-family: 'Baloo Da 2', sans-serif, Arial, Helvetica;
 
     font-size: 1rem;
     font-weight: 400;

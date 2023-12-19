@@ -71,7 +71,7 @@ module.exports = {
                     'font-family': 'Baloo Da 2',
                     'font-size': '67px',
                     'font-weight': 700,
-                    'line-height': 'normal',
+                    'line-height': '40px',
                     'letter-spacing': 0
                 },
 
@@ -79,7 +79,7 @@ module.exports = {
                     'font-family': 'Baloo Da 2',
                     'font-size': '51px',
                     'font-weight': 700,
-                    'line-height': 'normal',
+                    'line-height': '40px',
                     'letter-spacing': 0
                 },
 
@@ -87,7 +87,7 @@ module.exports = {
                     'font-family': 'Baloo Da 2',
                     'font-size': '38px',
                     'font-weight': 700,
-                    'line-height': 'normal',
+                    'line-height': '28px',
                     'letter-spacing': 0
                 },
 
@@ -95,7 +95,7 @@ module.exports = {
                     'font-family': 'Baloo Da 2',
                     'font-size': '29px',
                     'font-weight': 700,
-                    'line-height': 'normal',
+                    'line-height': '28px',
                     'letter-spacing': 0
                 },
 
@@ -103,7 +103,7 @@ module.exports = {
                     'font-family': 'Baloo Da 2',
                     'font-size': '21px',
                     'font-weight': 700,
-                    'line-height': 'normal',
+                    'line-height': '28px',
                     'letter-spacing': 0
                 },
 

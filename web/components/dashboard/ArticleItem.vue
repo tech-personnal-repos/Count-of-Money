@@ -1,5 +1,5 @@
 <template>
-    <div class=" py-5 px-4 h-[6.25rem] w-full">test</div>
+    <div class=" py-5 px-4 h-[6.25rem] w-full"></div>
 </template>
 
 <script lang="ts" setup>

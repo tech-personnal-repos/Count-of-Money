@@ -1,7 +1,13 @@
 import login from './auth/login.js';
 import register from './register/register.js'
+import cryptoInfos from './cryptos/cryptoInfos.js'
+import cryptoHistory from './cryptos/cryptoHistory.js';
+import cryptoToday from './cryptos/cryptoToday.js';
 
 export default {
 	login,
-	register
+	register,
+	cryptoInfos,
+	cryptoHistory,
+	cryptoToday
 };

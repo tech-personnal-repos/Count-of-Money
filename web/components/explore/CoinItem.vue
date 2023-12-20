@@ -15,14 +15,18 @@
             />
         </div>
 
-        <div class="bg-white flex justify-between flex-1 rounded-4xl outline outline-8 outline-white rounded-xl">
+        <div class="data">
             <div class="flex flex-col flex-1 justify-center">
                 <h4 class="font-bold text-center">{{ crypto.name }}</h4>
                 <h5 class="text-accent text-center">{{ crypto.symbol }}</h5>
             </div>
 
+            <p class="font-mb1 text-center">${{ price }}</p>
+            <p class="flex-1 font-mb1 text-center">
+                ${{ formatDecimalNumber(parseInt(crypto.marketCap)) }}
+            </p>
+
             <div class="flex flex-col justify-center">
-                <p class="font-mb1 text-center">${{ price }}</p>
                 <div class="flex items-center justify-center gap-1">
                     <SvgArrowPolygon
                         :class="{
@@ -44,6 +48,16 @@
                         {{ change }}%
                     </p>
                 </div>
+                <ExploreLittleChart
+                    class="!w-14 !h-6"
+                    :data="useTestData['data']"
+                    :crypto="crypto"
+                    :color="
+                        changeIsNegative
+                            ? useChartColors['danger']
+                            : useChartColors['success']
+                    "
+                />
             </div>
         </div>
     </div>
@@ -78,4 +92,9 @@ const change = computed(() => {
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.data {
+    @apply flex justify-between flex-1 items-center;
+    @apply bg-white rounded-xl outline outline-8 outline-white;
+}
+</style>

@@ -3,11 +3,11 @@ export function roundHalf(num: number) {
 }
 
 export function formatFloatNumber(num: number) {
-    return num.toLocaleString('en-US', { maximumFractionDigits: 2 });
+    return num.toLocaleString('en-UK', { maximumFractionDigits: 2 });
 }
 
 export function formatDecimalNumber(num: number) {
-    return num.toLocaleString('en-US', { maximumFractionDigits: 4 });
+    return num.toLocaleString('en-UK', { maximumFractionDigits: 4 });
 }
 
 export function formateHalfRoundedNumber(num: number) {

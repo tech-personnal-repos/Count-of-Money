@@ -1,6 +1,11 @@
 <template>
     <div class="w-full h-full">
-        <Line ref="chart" :data="data" :options="options" />
+        <Line
+            ref="chart"
+            class="h-full w-full"
+            :data="data"
+            :options="options"
+        />
     </div>
 </template>
 

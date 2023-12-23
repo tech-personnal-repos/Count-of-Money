@@ -1,30 +1,42 @@
 <template>
     <div
-        class="py-5 px-4 min-h-[6.25rem] w-full flex items-center h-fit gap-4 cursor-pointer"
-        :class="{
-            'bg-accent-15': selected,
-            'bg-white': !selected
-        }"
-        @click="emits('select', crypto)"
+        class="py-5 md:px-4 px-2 min-h-[6.25rem] w-full flex items-center h-fit max-sm:gap-2 sm:gap-4 bg-white"
     >
-        <div class="w-14 h-14 rounded-full bg-white overflow-hidden p-2.5">
-            <img
-                class="w-full h-full"
-                :src="crypto.iconUrl"
-                :alt="crypto.symbol"
-            />
+        <div class="flex flex-wrap justify-center gap-1 items-center">
+            <div>
+                <SvgStar
+                    class="w-8 h-8 max-sm:w-6 max-sm:h-6 cursor-pointer"
+                    :isFilled="selected"
+                    @click="emits('select', crypto)"
+                />
+            </div>
+            <div
+                class="w-12 h-12 max-sm:w-8 max-sm:h-8 rounded-full bg-white overflow-hidden"
+            >
+                <img
+                    class="w-full h-full"
+                    :src="crypto.iconUrl"
+                    :alt="crypto.symbol"
+                />
+            </div>
         </div>
 
         <div class="data">
             <div class="flex flex-col flex-1 justify-center">
-                <h4 class="font-bold text-center">{{ crypto.name }}</h4>
-                <h5 class="text-accent text-center">{{ crypto.symbol }}</h5>
+                <h4 class="text-center max-sm:font-h5">{{ crypto.name }}</h4>
+                <h5 class="text-accent text-center max-sm:font-mb1">
+                    {{ crypto.symbol }}
+                </h5>
             </div>
 
-            <p class="font-mb1 text-center">${{ price }}</p>
-            <p class="flex-1 font-mb1 text-center">
-                ${{ formatDecimalNumber(parseInt(crypto.marketCap)) }}
-            </p>
+            <div class="flex flex-wrap gap-2 flex-1 justify-center">
+                <p class="font-mb1 max-sm:font-legendb text-center">
+                    ${{ price }}
+                </p>
+                <p class="flex-1 font-mb1 max-sm:font-legendb text-center">
+                    ${{ formatPrices(parseInt(crypto.marketCap)) }}
+                </p>
+            </div>
 
             <div class="flex flex-col justify-center">
                 <div class="flex items-center justify-center gap-1">
@@ -39,7 +51,7 @@
                         "
                     />
                     <p
-                        class="font-mb1 text-center"
+                        class="font-mb1 max-sm:font-legendb text-center"
                         :class="{
                             'text-green': !changeIsNegative,
                             'text-red': changeIsNegative
@@ -49,7 +61,7 @@
                     </p>
                 </div>
                 <ExploreLittleChart
-                    class="!w-14 !h-6"
+                    class="!w-14 !h-6 max-sm:!w-12 max-sm:!h-4"
                     :data="useTestData['data']"
                     :crypto="crypto"
                     :color="
@@ -94,7 +106,7 @@ const change = computed(() => {
 
 <style lang="scss" scoped>
 .data {
-    @apply flex justify-between flex-1 items-center;
+    @apply flex justify-between flex-1 items-center gap-2;
     @apply bg-white rounded-xl outline outline-8 outline-white;
 }
 </style>

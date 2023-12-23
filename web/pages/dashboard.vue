@@ -6,9 +6,9 @@
     <div
         class="w-full h-full flex max-lg:flex-col max-lg:overflow-y-auto gap-2"
     >
-        <div class="flex flex-col flex-1 gap-4 min-h-[30rem]">
+        <div class="flex flex-col flex-1 gap-4 h-full">
             <DashboardSelectedCoinsVariations
-                class="flex-1 w-full"
+                class="h-full w-full"
                 :crypto="coinList?.selectedCrypto ?? null"
             />
             <DashboardFollowedArticleList

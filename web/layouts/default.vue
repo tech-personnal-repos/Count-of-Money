@@ -64,7 +64,7 @@
     <!-- !LAYOUT DESKTOP -->
 
     <!-- LAYOUT MOBILE -->
-    <main v-else-if="layout" class="flex-1 flex flex-col h-screen px-4">
+    <main v-else-if="layout" class="flex-1 flex flex-col h-screen">
         <div class="flex-1 w-full flex-col">
             <nav class="w-full pt-2">
                 <ul class="w-full h-full items-center flex justify-end gap-4">
@@ -86,7 +86,7 @@
                     </li> -->
                 </ul>
             </nav>
-            <div class="h-[calc(100vh-9rem)] w-full pt-2" >
+            <div class="h-[calc(100vh-8rem)] w-full pt-2">
                 <slot />
             </div>
         </div>

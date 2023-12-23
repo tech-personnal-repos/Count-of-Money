@@ -6,7 +6,7 @@
         </div>
         <div>
             <DashboardVariationsChart
-                class="w-full h-[25rem]"
+                class="w-full flex-1 h-full"
                 :data="data.data"
                 :crypto="crypto"
             />

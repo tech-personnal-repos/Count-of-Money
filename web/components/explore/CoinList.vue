@@ -30,7 +30,13 @@ useMountedFetch(() => {
 });
 
 function selectCrypto(crypto: Coin) {
-    selectedCrypto.value.push(crypto);
+    if (selectedCrypto.value.includes(crypto))
+        selectedCrypto.value = selectedCrypto.value.filter(
+            c => c.uuid !== crypto.uuid
+        );
+    else selectedCrypto.value.push(crypto);
+
+    // TODO: push list of selected or trigger error toast to ask login
 }
 </script>
 

@@ -73,7 +73,7 @@ function mapDataset() {
 
                 const colors = [
                     props.color,
-                    props.color + '00',
+                    props.color + '00'
 
                     // useChartColors['primary-80'],
                     // useChartColors['primary-60'],
@@ -96,7 +96,7 @@ function mapDataset() {
 watch(() => props.data, mapDataset, { immediate: true });
 
 const localOptions: (typeof options)['value'] = {
-
+    hover: { mode: null },
     scales: {
         y: {
             display: false,

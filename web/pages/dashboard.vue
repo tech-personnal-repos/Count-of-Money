@@ -9,6 +9,7 @@
         <div class="flex flex-col flex-1 gap-4 h-full">
             <DashboardSelectedCoinsVariations
                 class="h-full w-full"
+                :key="charRefreshKey"
                 :crypto="coinList?.selectedCrypto ?? null"
             />
             <DashboardFollowedArticleList
@@ -30,6 +31,14 @@ const { layout } = useScreenStore();
 const coinList = ref(
     null as InstanceType<typeof DashboardFollowedCoinList> | null
 );
+
+const charRefreshKey = ref(0);
+
+useMountedFetch(() => {
+    useEventBus.on('screen_resized', () => {
+        charRefreshKey.value++;
+    });
+});
 </script>
 
 <style lang="scss" scoped></style>

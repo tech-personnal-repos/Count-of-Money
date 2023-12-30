@@ -134,7 +134,6 @@ export function useApiFetch<T>(
 ): Promise<AsyncData<T>> {
     const runtimeConfig = useRuntimeConfig();
 
-    console.log('api' + runtimeConfig.public.api);
     // @ts-ignore
     return useFetch<T>(request, {
         baseURL: runtimeConfig.public.api,

@@ -34,6 +34,10 @@ export default defineNuxtConfig({
         '@/assets/css/tooltip.css'
     ],
 
+    imports: {
+        dirs: ['composables', 'composables/charts', 'composables/dashboard']
+    },
+
     modules: [
         '@nuxt/devtools',
         '@pinia/nuxt',

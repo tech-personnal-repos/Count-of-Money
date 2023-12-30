@@ -8,6 +8,7 @@
             '--font-color': fontColor
         }"
         :class="{ focus: isFocus }"
+        ref="label"
         class="rounded-xl flex h-min"
     >
         <input
@@ -24,16 +25,15 @@
             @input="manageInput"
             @change="manageChange"
             @focus="isFocus = true"
-            @blur="isFocus = false"
         />
         <div
-            @click="isHide = !isHide"
+            @click.stop="toggleHideShow"
             class="p-1 mr-0.5 ml-auto "
             :style="{ height: svgHeight + 'px', width: svgHeight + 'px' }"
             ref="svg"
         >
-            <SvgEye v-if="!isHide" class="h-full w-full" />
-            <SvgEyeSlash v-else class="h-full w-full" />
+            <SvgEye v-if="!isHide" class="h-full w-full" :color="svgColor" />
+            <SvgEyeSlash v-else class="h-full w-full" :color="svgColor" />
         </div>
     </label>
 </template>
@@ -79,6 +79,8 @@ defineProps({
 const isHide = ref(true);
 const isFocus = ref(false);
 const input = ref();
+const label = ref();
+const svg = ref();
 const svgHeight = ref(0);
 
 watch(
@@ -90,10 +92,22 @@ watch(
     { deep: true, immediate: true }
 );
 
+const svgColor = computed(() => {
+    if (isFocus.value) return 'var(--focus)';
+    return 'var(--outline-color)';
+});
+
 const emits = defineEmits<{
     (event: 'update:modelValue', value: string): void;
     (event: 'change:modelValue', value: string): void;
 }>();
+
+function toggleHideShow() {
+    if (input.value) {
+        input.value.focus();
+    }
+    isHide.value = !isHide.value;
+}
 
 function manageInput(event: Event) {
     const target = event?.target as HTMLInputElement;
@@ -104,6 +118,11 @@ function manageChange(event: Event) {
     const target = event?.target as HTMLInputElement;
     emits('change:modelValue', target?.value);
 }
+
+useClickOutside(label, () => {
+    isFocus.value = false;
+});
+
 </script>
 
 <style lang="scss" scoped>

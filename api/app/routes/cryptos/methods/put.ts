@@ -47,6 +47,8 @@ router.put(
                 uuid: coin['uuid'],
                 iconUrl: coin['iconUrl'],
                 price: coin['price'],
+                change: coin['change'],
+                marketCap: coin['marketCap'],
                 highestPrice: 0,
                 highestPriceTimestamp: "0",
                 supplyCirculating: 0,

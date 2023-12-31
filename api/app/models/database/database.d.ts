@@ -20,6 +20,8 @@ export interface CryptoCurrency {
     name: string;
     symbol: string;
     price: number;
+    change: number;
+    marketCap: number;
     iconUrl: string;
     highestPrice: number;
     highestPriceTimestamp: string;

@@ -42,11 +42,22 @@ router.get(
     })
 );
 
-// router.get(
-//     "/{cmid}",
-//     rateLimiter,
-//     wrap(async (req: Request, res: Response) => {
+router.get(
+    "/:cmid",
+    rateLimiter,
+    wrap(async (req: Request, res: Response) => {
+        const cmid: string = req.params['cmid'];
 
-//     }))
+        if (!cmid) {
+            res.status(401).send(`Error with parameter 'cmid': ${cmid}`);
+            return;
+        }
+        const objId: ObjectId = ObjectId.createFromHexString(cmid);
+        await getCryptoById(objId).then((cryptoData) => {
+            res.send(cryptoData);
+        }).catch((err) => {
+            res.send(err);
+        });
+    }))
 
 export default router;

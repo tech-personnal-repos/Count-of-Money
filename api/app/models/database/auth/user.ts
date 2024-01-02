@@ -6,6 +6,14 @@ import type { User } from '../database.js';
 import { db } from '../init.js';
 import { generatePersonalKey } from './token.js';
 
+export async function checkUsernameExist(username: string) {
+	const doc = await db.collection('users').findOne({ username });
+
+	if (doc) return Promise.reject({ status: 400, error: 'username already registered' });
+
+	return true;
+}
+
 export async function checkEmailExist(email: string) {
 	const doc = await db.collection('users').findOne({ email });
 
@@ -40,6 +48,10 @@ export async function createUser(newUser: User) {
 	const mailAvailable = await checkEmailExist(newUser.email);
 	if (!mailAvailable) {
 		return mailAvailable;
+	}
+	const usernameAvailable = await checkUsernameExist(newUser.username);
+	if (!usernameAvailable) {
+		return usernameAvailable;
 	}
 
 	const date = new Date();

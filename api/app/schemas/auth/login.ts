@@ -1,5 +1,3 @@
-import { isEmail } from '../validators.js';
-
 // export interface LoginRequest {
 // 	email: string;
 // 	password: string;
@@ -8,10 +6,10 @@ import { isEmail } from '../validators.js';
 const request = {
 	type: 'object',
 	properties: {
-		email: { type: 'string', transform: ['trim'], pattern: isEmail, minLength: 1 },
+		username: { type: 'string', transform: ['trim'], minLength: 1 },
 		password: { type: 'string', transform: ['trim'], minLength: 1 }
 	},
-	required: ['email', 'password']
+	required: ['username', 'password']
 };
 
 const response = {

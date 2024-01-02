@@ -21,6 +21,24 @@ export async function getUserDataById(_id: ObjectId, projection = { _id: 0 } as 
 	return doc ? doc : Promise.reject({ status: 404, error: 'user not found' });
 }
 
+export async function getUserDataWithUsernamePassword(
+	username: string,
+	password: string,
+	projection = { _id: 0 } as Projection
+) {
+	if (!username || !password) {
+		return Promise.reject({ status: 401, error: 'invalid username or password' });
+	}
+
+	const user = await db
+		.collection('users')
+		.findOne<User>({ username, password: generatePasswordHash(password) }, { projection });
+
+	if (user) return user;
+	return Promise.reject({ status: 401, error: 'invalid username or password' });
+}
+
+//unused because subject asks for username/password
 export async function getUserDataWithEmailPassword(
 	email: string,
 	password: string,

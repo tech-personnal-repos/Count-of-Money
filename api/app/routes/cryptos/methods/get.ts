@@ -21,25 +21,32 @@ router.get(
         }
 
         let response: CryptoCurrency[] = [];
-        let cmids: number[] = []
+        let cmids: string[] = []
         
         if (Array.isArray(queryCmids)) {
             queryCmids.forEach((id: string | qs.ParsedQs) => {
-                id = id.toString();
-                const parsed: number = parseInt(id);
-                if (isNaN(parsed))
-                    return;
-                cmids.push(parseInt(id));
+                cmids.push(id.toString());
+            });
+        } else {
+            cmids.push(queryCmids.toString());
+        }
+        for (const cmid of cmids) {
+            const objId: ObjectId = ObjectId.createFromHexString(cmid);
+            await getCryptoById(objId).then((cryptoData) => {
+                response.push(cryptoData);
+            }).catch((err) => {
+                res.send(err);
             });
         }
-        cmids.forEach(async (id) => {
-            const cryptoId = new ObjectId(id);
-            const cryptoData: CryptoCurrency = await getCryptoById(cryptoId);
-            response.push(cryptoData);
-        });
-
         res.send(response);
     })
 );
+
+// router.get(
+//     "/{cmid}",
+//     rateLimiter,
+//     wrap(async (req: Request, res: Response) => {
+
+//     }))
 
 export default router;

@@ -5,7 +5,7 @@ import { configDotenv } from 'dotenv';
 import { get } from '../../../helpers/fetch.js';
 import type { Request, Response } from '../../express.js';
 import { CryptoCurrency } from '../../../models/database/database.js';
-import { createCrypto } from '../../../models/database/crypto/cryptoCurrencies.js';
+import { createCrypto, updateCryptoByUUID } from '../../../models/database/crypto/cryptoCurrencies.js';
 
 
 
@@ -54,13 +54,16 @@ router.put(
                 supplyCirculating: 0,
                 supplyTotal: 0
             }
-            const created = await createCrypto(newCrypto);
+            const created = await createCrypto(newCrypto)
+            .catch(async () => {
+                return await updateCryptoByUUID(newCrypto.uuid, newCrypto);
+            });
             if (!created) {
                 res.send(created);
                 return;
             }
         }
-        res.send("updated");
+        res.send("updated successfully !");
     })
 );
 

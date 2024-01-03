@@ -15,7 +15,7 @@ export async function getAllUsersInGroup(group: ObjectId) {
 	return await db.collection('users').find<User>({ _group: group }).toArray();
 }
 
-export async function getUserDataById(_id: ObjectId, projection = { _id: 0 } as Projection) {
+export async function getUserDataById(_id: ObjectId, projection = { _id: 0, password: 0 } as Projection) {
 	const doc = await db.collection('users').findOne<User>({ _id }, { projection });
 
 	return doc ? doc : Promise.reject({ status: 404, error: 'user not found' });

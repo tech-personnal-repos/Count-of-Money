@@ -7,7 +7,7 @@ const request = {
         username: { type: 'string', transform: ['trim'], minLength: 1},
 		password: { type: 'string', transform: ['trim'], minLength: 8 }
     },
-    required: ['email', 'password']
+    required: ['email', 'username', 'password']
 };
 
 const response = {

@@ -58,6 +58,7 @@ export async function createUser(newUser: User) {
 	newUser.creationDate = date.toISOString();
 	newUser.personalKey = generatePersonalKey();
 	newUser.password = crypto.createHmac('sha256', process.env.SECRET_HASH).update(newUser.password).digest('hex');
+	newUser.followedCryptos = [];
 
 	const response = await db.collection('users').insertOne({ ...newUser });
 	return await db.collection('users').findOne({ _id: response.insertedId });

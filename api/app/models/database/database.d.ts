@@ -12,6 +12,7 @@ export interface User {
     creationDate?: string;
     roles?: string[];
     personalKey?: string;
+    followedCryptos?: string[];
 }
 
 export interface CryptoCurrency {

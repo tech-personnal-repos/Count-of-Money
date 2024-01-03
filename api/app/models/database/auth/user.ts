@@ -1,3 +1,5 @@
+import crypto from 'crypto';
+
 import type { ObjectId } from 'mongodb';
 import type { User } from '../database.js';
 
@@ -35,14 +37,17 @@ export async function createUser(newUser: User) {
 		return Promise.reject({ status: 400, error: 'new user undefined' });
 	}
 
-	newUser.password = 'none';
+	const mailAvailable = await checkEmailExist(newUser.email);
+	if (!mailAvailable) {
+		return mailAvailable;
+	}
 
 	const date = new Date();
 	newUser.creationDate = date.toISOString();
 	newUser.personalKey = generatePersonalKey();
+	newUser.password = crypto.createHmac('sha256', process.env.SECRET_HASH).update(newUser.password).digest('hex');
 
 	const response = await db.collection('users').insertOne({ ...newUser });
-	// askPasswordCreation(newUser.email);
 	return await db.collection('users').findOne({ _id: response.insertedId });
 }
 

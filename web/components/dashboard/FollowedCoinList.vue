@@ -26,12 +26,8 @@ defineExpose({
     selectedCrypto
 });
 
-useMountedFetch(() => {
-    if (!cryptos.value)
-        cryptosStore.fetchCryptos().then(() => {
-            selectedCrypto.value = cryptos.value?.at(0) || null;
-        });
-    else selectedCrypto.value = cryptos.value?.at(0) || null;
+watchOnce(cryptos, () => {
+    selectedCrypto.value = cryptos.value?.at(0) || null;
 });
 
 function selectCrypto(crypto: Coin) {

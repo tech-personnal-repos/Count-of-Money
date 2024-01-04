@@ -130,7 +130,7 @@ module.exports = {
                     fontWeight: 400,
                     fontSize: '16px',
 
-                    lineHeight: 'normal',
+                    lineHeight: '18px',
                     letterSpacing: 0
                 },
 

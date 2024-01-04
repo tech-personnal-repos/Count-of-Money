@@ -12,12 +12,11 @@ const code = route.query.code as string;
 
 onMounted(async () => {
     if (state && code && state === localStorage.getItem('githubState')) {
-        console.log('github');
         await useApiFetch('/users/oauth/github', {
             method: 'POST',
             body: { code }
         });
     }
-    // navigateTo('/dashboard');
+    navigateTo('/dashboard');
 });
 </script>

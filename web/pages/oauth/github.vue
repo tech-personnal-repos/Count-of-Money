@@ -17,6 +17,6 @@ onMounted(async () => {
             body: { code }
         });
     }
-    navigateTo('/dashboard');
+    // navigateTo('/dashboard');
 });
 </script>

@@ -4,7 +4,7 @@
     </Head>
 
     <div
-        class="w-full flex max-lg:flex-col max-lg:overflow-y-auto gap-2 h-full relative"
+        class="w-full flex max-lg:flex-col max-lg:overflow-y-auto gap-2 h-full"
     >
         <div class="flex lg:flex-1 flex-col gap-4 md:h-full h-1/2">
             <DashboardSelectedCoinsVariations
@@ -14,7 +14,7 @@
             />
             <DashboardFollowedArticleList
                 v-if="layout === 'desktop'"
-                class="h-2/5 w-full"
+                class="h-[calc(40%-1rem)] w-full"
             />
         </div>
         <div class="lg:w-[24rem] lg:h-full w-full h-1/2">

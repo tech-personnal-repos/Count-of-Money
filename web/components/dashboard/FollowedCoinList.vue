@@ -19,6 +19,10 @@ import { useCryptosStore } from '@/store/cryptos';
 
 const cryptosStore = useCryptosStore();
 const { cryptos } = storeToRefs(cryptosStore);
+useMountedFetch(() => {
+    console.log('fetching cryptos');
+    if (!cryptos.value) cryptosStore.fetchCryptos();
+});
 
 const selectedCrypto = ref(null as Coin | null);
 

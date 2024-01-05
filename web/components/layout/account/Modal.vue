@@ -79,7 +79,7 @@ const githubAuthUrl = computed(() => {
         client_id: runtimeConfig.public.oauth.github.clientId,
         redirect_uri: `${runtimeConfig.public.oauth.redirectUri}/oauth/github`,
         response_type: 'code',
-        scope: 'openid profile email',
+        scope: 'read:user',
         state
     };
     return `${url}?${new URLSearchParams(params)}`;

@@ -6,7 +6,7 @@ import {
 } from '../../models/database/auth/token.js';
 
 import type { LoggedRequest, RequestWithQuery } from '../../routes/express.js';
-import { getUserDataWithEmailPassword } from '../../models/database/user/user.js';
+import { getUserDataWithUsernamePassword } from '../../models/database/user/user.js';
 
 export interface RequestWithQueryAndCookies
     extends RequestWithQuery<{ token: string }> {
@@ -49,8 +49,8 @@ export async function isTokenValid(
     return isValid;
 }
 
-export async function generateUserTokens(email: string, password: string) {
-    const user = await getUserDataWithEmailPassword(email, password, {
+export async function generateUserTokens(username: string, password: string) {
+    const user = await getUserDataWithUsernamePassword(username, password, {
         _id: 1,
         email: 1,
         username: 1,

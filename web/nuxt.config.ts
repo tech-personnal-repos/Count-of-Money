@@ -20,8 +20,6 @@ export default defineNuxtConfig({
     runtimeConfig: {
         public: {
             api: process.env.BACKEND_URL,
-            sockets: process.env.SOCKET_URL,
-            static: process.env.STATIC_URL,
             wip: process.env.NODE_ENV !== 'production',
 
             oauth: {

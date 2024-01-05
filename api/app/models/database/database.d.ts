@@ -6,12 +6,16 @@ export interface Projection {
 
 export interface User {
     _id?: ObjectId;
-    email: string;
+    email: string | null;
     password: string;
     username: string;
-    creationDate?: string;
+    displayName?: string;
     roles?: string[];
     personalKey?: string;
+    avatarUrl?: string;
+
+    githubId?: string;
+    googleId?: string;
 }
 
 export interface CryptoCurrency {

@@ -16,27 +16,27 @@ export async function getCryptoById(_id: ObjectId) {
 }
 
 export async function getCryptoByName(name: string) {
-    const doc = await db.collection(collection).findOne({ name });
+    const doc = await db.collection(collection).findOne<CryptoCurrency>({ name });
 
 	if (!doc) return Promise.reject({ status: 400, error: `cryptocurrency with name: ${name} not found` });
     
-    return doc._id;
+    return doc;
 }
 
 export async function getCryptoByUUID(uuid: string) {
-    const doc = await db.collection(collection).findOne({ uuid });
+    const doc = await db.collection(collection).findOne<CryptoCurrency>({ uuid });
 
 	if (!doc) return Promise.reject({ status: 400, error: `cryptocurrency with uuid: ${uuid} not found` });
     
-    return doc._id;
+    return doc;
 }
 
 export async function getCryptoBySymbol(symbol: string) {
-    const doc = await db.collection(collection).findOne({ symbol });
+    const doc = await db.collection(collection).findOne<CryptoCurrency>({ symbol });
 
 	if (!doc) return Promise.reject({ status: 400, error: `cryptocurrency with symbol: ${symbol} not found` });
     
-    return doc._id;
+    return doc;
 }
 
 export async function createCrypto(newCrypto: CryptoCurrency) {

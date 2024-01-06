@@ -4,6 +4,7 @@ import cryptoInfos from './cryptos/cryptoInfos.js'
 import cryptoHistory from './cryptos/cryptoHistory.js';
 import cryptoToday from './cryptos/cryptoToday.js';
 import followCrypto from './follows/followCrypto.js';
+import followedCryptos from './follows/followedCryptos.js';
 
 export default {
 	login,
@@ -12,4 +13,5 @@ export default {
 	cryptoHistory,
 	cryptoToday,
 	followCrypto,
+	followedCryptos,
 };

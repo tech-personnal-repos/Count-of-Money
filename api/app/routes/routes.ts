@@ -3,7 +3,6 @@ import Logger from '../config/logger.js';
 
 async function importRoutes() {
     const modules = await Promise.all([
-        import('./auth/init.js'),
         import('./root/init.js'),
         import('./register/init.js'),
         import('./cryptos/init.js'),
@@ -15,11 +14,9 @@ async function importRoutes() {
 export async function initRoutes(app: Express) {
     const timer = Date.now();
 
-    const [auth, root, register, cryptos, users] = await importRoutes();
+    const [root, register, cryptos, users] = await importRoutes();
 
     app.use('/', root);
-
-    app.use('/auth', auth);
 
     app.use('/register', register);
 

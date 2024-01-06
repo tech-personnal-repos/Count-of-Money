@@ -1,6 +1,8 @@
 <template>
     <div class="flex flex-col">
-        <h3 class="my-1 ml-1">Followed cryptos</h3>
+        <h3 class="my-1 ml-1 max-sm:font-h4 max-sm:text-center">
+            Followed cryptos
+        </h3>
         <ul class="flex flex-1 flex-col gap-4 overflow-auto p-3">
             <li v-for="crypto in cryptos" :key="crypto.uuid">
                 <DashboardFollowedCoinItem

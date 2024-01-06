@@ -9,7 +9,10 @@ function onRequest({ request, options }: any) {
     options.headers['Content-Type'] = 'application/json';
 
     options.url = request.replace(options.baseURL, '');
-    const tokens = useState<Tokens>('tokens');
+    const tokens = ref({
+        refreshToken: useCookie('refresh_token'),
+        accessToken: useCookie('access_token')
+    });
 
     if (
         !options.headers['Authorization'] &&
@@ -36,7 +39,7 @@ async function onResponse(context: any): Promise<void> {
             failedQueue.push({ resolve, failedConfig: context })
         );
 
-    const refreshToken = useState<Tokens>('tokens').value?.refreshToken;
+    const refreshToken = useCookie('refresh_token').value;
     if (!refreshToken) return;
 
     isRefreshing = true;

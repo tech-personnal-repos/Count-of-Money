@@ -1,7 +1,10 @@
 <template>
     <div class="flex flex-col">
-        <div class="flex w-full items-center h-fit">
-            <h3>Price variations on selected crypto</h3>
+        <div class="flex w-full items-center h-fit max-sm:flex-col">
+            <h3 v-if="layout !== 'mobile'">
+                Price variations on selected crypto
+            </h3>
+            <h4 v-else>Price variations</h4>
             <DashboardPeriodSelector class="ml-auto" ref="selector" />
         </div>
         <DashboardVariationsChart
@@ -14,6 +17,7 @@
 
 <script lang="ts" setup>
 import DashboardPeriodSelector from '@/components/dashboard/PeriodSelector.vue';
+import { useScreenStore } from '~/store/screen';
 
 defineProps({
     crypto: {
@@ -21,6 +25,9 @@ defineProps({
         required: true
     }
 });
+
+const screenStore = useScreenStore();
+const { layout } = storeToRefs(screenStore);
 
 const selector = ref(
     null as InstanceType<typeof DashboardPeriodSelector> | null

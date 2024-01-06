@@ -15,7 +15,10 @@ export function setLoginState() {
         path: '/'
     });
 
-    const tokens = useState<Tokens>('tokens');
+    const tokens = ref({
+        refreshToken: useCookie('refresh_token'),
+        accessToken: useCookie('access_token')
+    });
     tokens.value = {
         accessToken: accessTokenCookie.value || null,
         refreshToken: refreshTokenCookie.value || null
@@ -59,7 +62,10 @@ export function setTokenStates(tokens: Tokens | null) {
     accessTokenCookie.value = tokens.accessToken;
     refreshTokenCookie.value = tokens.refreshToken;
 
-    const state = useState<Tokens>('tokens');
+    const state = ref({
+        refreshToken: useCookie('refresh_token'),
+        accessToken: useCookie('access_token')
+    });
     state.value = {
         accessToken: tokens.accessToken,
         refreshToken: tokens.refreshToken
@@ -81,6 +87,9 @@ export function disconnect() {
     accessTokenCookie.value = null;
     refreshTokenCookie.value = null;
 
-    const tokens = useState<Tokens>('tokens');
+    const tokens = ref({
+        refreshToken: useCookie('refresh_token'),
+        accessToken: useCookie('access_token')
+    });
     tokens.value = { accessToken: null, refreshToken: null };
 }

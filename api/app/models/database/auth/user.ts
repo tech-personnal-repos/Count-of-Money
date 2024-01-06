@@ -70,6 +70,16 @@ export async function createUser(newUser: User) {
     const response = await db.collection('users').insertOne({ ...newUser });
     return await db.collection('users').findOne({ _id: response.insertedId });
 }
+
+function capitalize(str: string): string | null {
+    return (
+        str
+            ?.split(' ')
+            .map(s => s.charAt(0).toUpperCase() + s.substring(1))
+            .join(' ') ?? null
+    );
+}
+
 export async function getUserWithGithubData(
     user: GithubUserResponse
 ): Promise<User | null> {
@@ -87,7 +97,7 @@ export async function createdUserWithGithubData(
         username: user.login,
         email: user.email,
         githubId: user.id.toString(),
-        displayName: user.login || user.name,
+        displayName: capitalize(user.name) || capitalize(user.login),
         avatarUrl: user.avatar_url,
         personalKey: generatePersonalKey(),
         password: 'githubDefaultPassword'
@@ -116,7 +126,7 @@ export async function createdUserWithGoogleData(
         username: user.email.split('@')[0],
         email: user.email,
         googleId: user.id.toString(),
-        displayName: user.name,
+        displayName: capitalize(user.name),
         avatarUrl: user.picture,
         personalKey: generatePersonalKey(),
         password: 'googleDefaultPassword'

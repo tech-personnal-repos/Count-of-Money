@@ -1,7 +1,12 @@
 import { Router } from 'express';
 import { rateLimiter } from '../../../middleware/bruteforce.js';
 import { wrap } from '../../../middleware/route.js';
-import type { Request, RequestWithQuery, Response } from '../../express.js';
+import type {
+    LoggedRequest,
+    Request,
+    RequestWithQuery,
+    Response
+} from '../../express.js';
 
 import {
     getGithubToken,
@@ -10,7 +15,8 @@ import {
     handleGoogleLogin
 } from '../../../controllers/users/oauth.js';
 import schemas from '../../../middleware/schemas.js';
-import { isNotLogged } from '../../../middleware/authentication.js';
+import { isLogged, isNotLogged } from '../../../middleware/authentication.js';
+import { getUserDataById } from '../../../models/database/user/user.js';
 
 const router = Router();
 
@@ -100,6 +106,20 @@ router.get(
             await handleGoogleLogin(google_access_token);
 
         res.send({ access_token, refresh_token });
+    })
+);
+
+router.get(
+    '/profile',
+    rateLimiter,
+    isLogged,
+    schemas('profile', { response: true }),
+    wrap(async (req: LoggedRequest, res: Response) => {
+        const user = await getUserDataById(req.user._id);
+        delete user.password;
+        delete user.personalKey;
+
+        res.send(user);
     })
 );
 

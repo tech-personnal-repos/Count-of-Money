@@ -42,8 +42,6 @@ export async function connect(email: string, password: string) {
 
 export function setTokenStates(tokens: Tokens | null) {
     if (!tokens) return;
-    console.log('setTokenStates', tokens.accessToken);
-    console.log('setTokenStates', getExpirationDate(tokens.accessToken));
     const accessTokenCookie = useCookie('access_token', {
         expires: getExpirationDate(tokens.accessToken),
         sameSite: true,

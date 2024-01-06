@@ -14,7 +14,6 @@ export function decodeToken(token: string | null) {
 }
 
 export function getExpirationDate(token: string | null) {
-    console.log('getExpirationDate', token);
     if (!token) return new Date(0);
 
     const decoded = decodeToken(token);

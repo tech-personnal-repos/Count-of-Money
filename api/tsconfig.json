@@ -1,0 +1,26 @@
+{
+	"compilerOptions": {
+		"lib": ["ESNext"],
+		"target": "ESNext",
+
+		"module": "ESNext",
+		"moduleResolution": "Node",
+		"resolveJsonModule": true,
+
+		// "strict": true,
+
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+
+		"forceConsistentCasingInFileNames": true,
+
+		"removeComments": true,
+		"importHelpers": true,
+		"noUnusedLocals": true,
+
+		"outDir": "build"
+	},
+
+	"include": ["app/**/*"],
+	"exclude": ["test/**/*", "vite.config.ts", "node_modules"]
+}

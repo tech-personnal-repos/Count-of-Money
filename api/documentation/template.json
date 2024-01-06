@@ -1,0 +1,18 @@
+{
+	"openapi": "3.0.3",
+	"info": {
+		"title": "Count of Money API",
+		"description": "<a target=\"_blank\" href=\"\">Schéma de la base de donnée</a>",
+		"version": "0.0.1"
+	},
+	"components": {
+		"securitySchemes": {
+			"Bearer": {
+				"type": "apiKey",
+				"name": "Authorization",
+				"in": "header"
+			}
+		}
+	},
+	"paths": {}
+}

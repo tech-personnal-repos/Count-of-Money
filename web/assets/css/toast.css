@@ -1,0 +1,23 @@
+.Vue-Toastification__toast--success {
+	background-color: var(--success) !important;
+}
+
+.Vue-Toastification__toast--info {
+	background-color: var(--secondary) !important;
+}
+
+.Vue-Toastification__toast--warning {
+	background-color: var(--warning) !important;
+}
+
+.Vue-Toastification__toast--error {
+	background-color: var(--danger) !important;
+}
+
+.Vue-Toastification__container.top-right {
+	padding: 18px 26px;
+}
+
+.Vue-Toastification__toast-body {
+	font-family: 'Montserrat', sans-serif;
+}

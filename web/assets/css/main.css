@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo Da 2:wght@400;500;600;700;900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --text: #220022;
+    --background: #ffffff;
+    --primary: #4f0868;
+    --secondary: #f4dcff;
+    --accent: #8f1bba;
+    --accent-15: rgba(143, 27, 186, 0.15);
+    --success: #32c000;
+    --danger: #fb3333;
+    --warning: #f9c753;
+
+    --card-bg: rgba(0, 0, 0, 0.03);
+    --hover-bg: rgba(0, 0, 0, 0.05);
+}
+
+html {
+    font-family: 'Baloo Da 2', sans-serif, Arial, Helvetica;
+    line-height: 1.15;
+    font-size: 100%;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    /* margin: 0; */
+}
+
+::-webkit-scrollbar {
+    width: 0.4rem;
+    height: 0.4rem;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 0.4rem 0.4rem;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #d1d1d8;
+    border-radius: 100vw;
+}
+
+::-webkit-scrollbar-corner,
+::-webkit-scrollbar-button {
+    display: none;
+}
+
+html,
+body,
+#__nuxt,
+#__layout {
+    margin: 0;
+    padding: 0;
+
+    font-family: 'Baloo Da 2', sans-serif, Arial, Helvetica;
+
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.75;
+
+    text-align: left;
+    color: var(--text);
+    background: var(--background);
+
+    width: 100vw;
+    height: 100vh;
+
+    scrollbar-color: var(--primary) transparent;
+    scrollbar-width: auto;
+
+    overflow: hidden;
+}
+
+@media screen and (max-width: 640px) {
+    ::-webkit-scrollbar {
+        -webkit-appearance: none !important;
+        width: 0px !important;
+    }
+}
+
+#__nuxt {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}

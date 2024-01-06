@@ -1,0 +1,4 @@
+{
+	"include": ["app/**/*"],
+	"exclude": ["test/**/*", "vite.config.ts", "node_modules"]
+}

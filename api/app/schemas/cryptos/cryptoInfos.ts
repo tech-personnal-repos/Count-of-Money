@@ -17,7 +17,7 @@ const response = {
         marketCap: { type: 'number', default: 0},
         highestPrice: { type: 'object', properties: {
             price: { type: 'number', default: 0 },
-            timestamp: { type: 'number', default: 0}
+            timestamp: { type: 'string', default: 0}
         }},
         supply: { type: 'object', properties: {
             circulating: { type: 'number', default: 0 },

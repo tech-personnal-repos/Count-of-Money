@@ -6,47 +6,42 @@ import { wrap } from '../../../middleware/route.js';
 import type { LoggedRequest, Request, Response } from '../../express.js';
 import {
     getAllCryptosData,
-    getCryptoById,
     getCryptoByUUID
 } from '../../../models/database/crypto/cryptoCurrencies.js';
-import { ObjectId } from 'mongodb';
 import { CryptoCurrency } from '../../../models/database/database.js';
 import { isLogged } from '../../../middleware/authentication.js';
 import { getAllFollowedCryptosFromUserId } from '../../../models/database/user/follows.js';
+import { configDotenv } from 'dotenv';
+import { get } from '../../../helpers/fetch.js';
 
 const router = Router();
 
 router.get(
     '/',
     rateLimiter,
+    schemas('cryptoList', { response: true }),
     wrap(async (req: Request, res: Response) => {
         const queryCmids = req.query.cmids;
+        let cryptosData: CryptoCurrency[] = [];
+
         if (!queryCmids) {
-            res.send(await getAllCryptosData());
-            return;
-        }
-
-        let response: CryptoCurrency[] = [];
-        let cmids: string[] = [];
-
-        if (Array.isArray(queryCmids)) {
-            queryCmids.forEach((id: string | qs.ParsedQs) => {
-                cmids.push(id.toString());
-            });
+            cryptosData = await getAllCryptosData();
         } else {
-            cmids.push(queryCmids.toString());
-        }
-        for (const cmid of cmids) {
-            const objId: ObjectId = ObjectId.createFromHexString(cmid);
-            await getCryptoById(objId)
-                .then(cryptoData => {
-                    response.push(cryptoData);
-                })
-                .catch(err => {
-                    res.send(err);
+            let cmids: string[] = [];
+
+            if (Array.isArray(queryCmids)) {
+                queryCmids.forEach((id: string | qs.ParsedQs) => {
+                    cmids.push(id.toString());
                 });
+            } else {
+                cmids.push(queryCmids.toString());
+            }
+
+            for (const cmid of cmids) {
+                cryptosData.push(await getCryptoByUUID(cmid));
+            }
         }
-        res.send(response);
+        res.send({ cryptos: cryptosData });
     })
 );
 
@@ -79,6 +74,7 @@ router.get(
 
 /*
  ** Keep this as last function :')
+ ** (if no more routing after :cmid)
  */
 router.get(
     '/:cmid',
@@ -89,14 +85,58 @@ router.get(
             res.status(401).send(`Error with parameter 'cmid': ${cmid}`);
             return;
         }
-        const objId: ObjectId = ObjectId.createFromHexString(cmid);
-        await getCryptoById(objId)
+        await getCryptoByUUID(cmid)
             .then(cryptoData => {
                 res.send(cryptoData);
             })
             .catch(err => {
                 res.send(err);
             });
+    })
+);
+
+configDotenv();
+const coinrankingApiKey: string = process.env.COINRANKING_KEY;
+const coinrankingUrlApi: string = 'https://api.coinranking.com/';
+const coinrankingVersion: string = 'v2';
+const coinrankingCoins: string =
+    coinrankingUrlApi + coinrankingVersion + '/coin/:uuid/history';
+
+const options = {
+    headers: {
+        'x-access-token': coinrankingApiKey
+    }
+};
+
+router.get(
+    '/:cmid/history/:period',
+    rateLimiter,
+    schemas('cryptoHistory', { response: true }),
+    wrap(async (req: Request, res: Response) => {
+        const cmid = req.params['cmid'];
+        const period = req.params['period'] || '24h';
+
+        const crypto = await getCryptoByUUID(cmid);
+        const response = await get(
+            coinrankingCoins.replace(':uuid', crypto.uuid) +
+                `?timePeriod=${period}`,
+            options
+        )
+            .then(response => response.json())
+            .then(response => {
+                return response;
+            });
+
+        if (response['status'] != 'success') {
+            res.send(response);
+            return;
+        }
+
+        const data: {
+            change: string;
+            history: { price: string; timestamp: number };
+        } = response['data'];
+        res.send(data);
     })
 );
 

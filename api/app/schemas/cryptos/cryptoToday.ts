@@ -14,11 +14,11 @@ const response = {
         price: { type: 'number', default: 0},
         highestPrice: { type: 'object', properties: {
             price: { type: 'number', default: 0 },
-            timestamp: { type: 'number', default: 0}
+            timestamp: { type: 'string', default: 0}
         }},
         lowestPrice: { type: 'object', properties: {
             price: { type: 'number', default: 0 },
-            timestamp: { type: 'number', default: 0}
+            timestamp: { type: 'string', default: 0}
         }},
         change: { type: 'number', default: 0 }
     }

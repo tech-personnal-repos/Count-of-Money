@@ -28,7 +28,7 @@ export function setLoginState() {
 }
 
 export async function connect(email: string, password: string) {
-    const { data } = await useApiFetch<AuthResponse>('/auth', {
+    const { data } = await useApiFetch<AuthResponse>('/users//auth', {
         method: 'post',
         body: { email, password: password }
     });

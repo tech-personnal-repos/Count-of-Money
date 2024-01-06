@@ -15,9 +15,22 @@ import { isLoggedWithRefresh } from '../../../middleware/authentication.js';
 import type { Request, Response, LoggedRequest } from '../../express.js';
 
 router.post(
-    '/',
+    '/login',
     rateLimiter,
     schemas('login'),
+    wrap(async (req: Request, res: Response) => {
+        const tokens = await generateUserTokens(
+            req.body.email,
+            req.body.password
+        );
+        res.send(tokens);
+    })
+);
+
+router.post(
+    '/register',
+    rateLimiter,
+    schemas('register'),
     wrap(async (req: Request, res: Response) => {
         const tokens = await generateUserTokens(
             req.body.email,

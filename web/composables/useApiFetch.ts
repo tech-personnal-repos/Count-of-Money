@@ -27,7 +27,7 @@ async function onResponse(context: any): Promise<void> {
     const { response, options } = context;
 
     if (response.ok || response.status !== 401) return;
-    if (options.url === '/auth/refresh') {
+    if (options.url === '/users/auth/refresh') {
         disconnect();
         navigateTo('/');
 
@@ -45,7 +45,7 @@ async function onResponse(context: any): Promise<void> {
     isRefreshing = true;
     const runtimeConfig = useRuntimeConfig();
 
-    const { data } = await useFetch('/auth/refresh', {
+    const { data } = await useFetch('/users/auth/refresh', {
         method: 'post',
         headers: {
             Authorization: `Bearer ${refreshToken}`,

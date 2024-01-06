@@ -26,10 +26,19 @@ useMountedFetch(async () => {
             }`
         };
 
-        const { data } = await useApiFetch<Tokens>(
+        const { data, error: errorCallback } = await useApiFetch<AuthResponse>(
             `/users/auth/github/callback?${new URLSearchParams(params)}`
         );
-        setTokenStates(data.value);
+        if (errorCallback.value) {
+            useToast.error('An error occurred while login with Google');
+            return navigateTo('/dashboard');
+        }
+
+        setTokenStates({
+            accessToken: data.value.access_token,
+            refreshToken: data.value.refresh_token
+        });
+        useToast.success('You are now logged in with GitHub');
     }
     navigateTo('/dashboard');
 });

@@ -79,17 +79,6 @@ export async function getGoogleToken(code: string) {
     return await response.json();
 }
 
-// {
-//   id: '117838370847580143735',
-//   email: 'ytvalentincaure@gmail.com',
-//   verified_email: true,
-//   name: 'Valentin Caure',
-//   given_name: 'Valentin',
-//   family_name: 'Caure',
-//   picture: 'https://lh3.googleusercontent.com/a/ACg8ocJl7jkixrVXU4CbhHjRtL4UGgkKT25c1wLyNuMYvjOBAQ=s96-c',
-//   locale: 'fr'
-// }
-
 export interface GoogleUserResponse {
     id: string;
     email: string;
@@ -109,7 +98,6 @@ export async function handleGoogleLogin(access_token: string) {
     });
 
     const user = (await response.json()) as GoogleUserResponse;
-    console.log(user);
 
     if (!user)
         return Promise.reject({

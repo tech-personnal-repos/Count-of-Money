@@ -10,6 +10,7 @@ import {
     handleGoogleLogin
 } from '../../../controllers/users/oauth.js';
 import schemas from '../../../middleware/schemas.js';
+import { isNotLogged } from '../../../middleware/authentication.js';
 
 const router = Router();
 
@@ -25,6 +26,7 @@ type CallbackRequest = Request &
 
 router.get(
     '/auth/github',
+    isNotLogged,
     rateLimiter,
     schemas('oauth', { response: true }),
     wrap(async (req: OauthRequest, res: Response) => {
@@ -42,6 +44,9 @@ router.get(
 
 router.get(
     '/auth/github/callback',
+    isNotLogged,
+    rateLimiter,
+    schemas('login', { response: true }),
     wrap(async (req: CallbackRequest, res: Response) => {
         const { access_token: github_access_token } = req.query;
 
@@ -55,20 +60,13 @@ router.get(
         const { access_token, refresh_token } =
             await handleGithubLogin(github_access_token);
 
-        res.cookie('token', access_token, {
-            domain: 'localhost',
-            expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7)
-        })
-            .cookie('refresh_token', refresh_token, {
-                domain: 'localhost',
-                expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7)
-            })
-            .send({ access_token, refresh_token });
+        res.send({ access_token, refresh_token });
     })
 );
 
 router.get(
     '/auth/google',
+    isNotLogged,
     rateLimiter,
     schemas('oauth', { response: true }),
     wrap(async (req: OauthRequest, res: Response) => {
@@ -85,6 +83,9 @@ router.get(
 
 router.get(
     '/auth/google/callback',
+    isNotLogged,
+    rateLimiter,
+    schemas('login', { response: true }),
     wrap(async (req: CallbackRequest, res: Response) => {
         const { access_token: google_access_token } = req.query;
 
@@ -98,15 +99,7 @@ router.get(
         const { access_token, refresh_token } =
             await handleGoogleLogin(google_access_token);
 
-        res.cookie('token', access_token, {
-            domain: 'localhost',
-            expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7)
-        })
-            .cookie('refresh_token', refresh_token, {
-                domain: 'localhost',
-                expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7)
-            })
-            .send({ access_token, refresh_token });
+        res.send({ access_token, refresh_token });
     })
 );
 

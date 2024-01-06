@@ -1,80 +1,88 @@
 export interface AuthResponse {
-	access_token: string;
-	refresh_token: string;
+    access_token: string;
+    refresh_token: string;
 }
 
 export function setLoginState() {
-	const accessTokenCookie = useCookie('access_token', {
-		sameSite: true,
-		secure: useIsProduction(),
-		path: '/'
-	});
-	const refreshTokenCookie = useCookie('refresh_token', {
-		sameSite: true,
-		secure: useIsProduction(),
-		path: '/'
-	});
+    const accessTokenCookie = useCookie('access_token', {
+        sameSite: true,
+        secure: useIsProduction(),
+        path: '/'
+    });
+    const refreshTokenCookie = useCookie('refresh_token', {
+        sameSite: true,
+        secure: useIsProduction(),
+        path: '/'
+    });
 
-	const tokens = useState<Tokens>('tokens');
-	tokens.value = { accessToken: accessTokenCookie.value || null, refreshToken: refreshTokenCookie.value || null };
+    const tokens = useState<Tokens>('tokens');
+    tokens.value = {
+        accessToken: accessTokenCookie.value || null,
+        refreshToken: refreshTokenCookie.value || null
+    };
 
-	return Boolean(tokens.value.refreshToken);
+    return Boolean(tokens.value.refreshToken);
 }
 
 export async function connect(email: string, password: string) {
-	const { data } = await useApiFetch<AuthResponse>('/auth', {
-		method: 'post',
-		body: { email, password: password }
-	});
+    const { data } = await useApiFetch<AuthResponse>('/auth', {
+        method: 'post',
+        body: { email, password: password }
+    });
 
-	if (!data || !data.value) return false;
+    if (!data || !data.value) return false;
 
-	setTokenStates({ accessToken: data.value.access_token, refreshToken: data.value.refresh_token });
+    setTokenStates({
+        accessToken: data.value.access_token,
+        refreshToken: data.value.refresh_token
+    });
 
-	return true;
+    return true;
 }
 
 export function setTokenStates(tokens: Tokens | null) {
-	if (!tokens) return;
+    if (!tokens) return;
+    console.log('setTokenStates', tokens.accessToken);
+    console.log('setTokenStates', getExpirationDate(tokens.accessToken));
+    const accessTokenCookie = useCookie('access_token', {
+        expires: getExpirationDate(tokens.accessToken),
+        sameSite: true,
+        secure: useIsProduction(),
+        path: '/'
+    });
 
-	const accessTokenCookie = useCookie('access_token', {
-		expires: getExpirationDate(tokens.accessToken),
-		sameSite: true,
-		secure: useIsProduction(),
-		path: '/'
-	});
+    const refreshTokenCookie = useCookie('refresh_token', {
+        expires: getExpirationDate(tokens.refreshToken),
+        sameSite: true,
+        secure: useIsProduction(),
+        path: '/'
+    });
 
-	const refreshTokenCookie = useCookie('refresh_token', {
-		expires: getExpirationDate(tokens.refreshToken),
-		sameSite: true,
-		secure: useIsProduction(),
-		path: '/'
-	});
+    accessTokenCookie.value = tokens.accessToken;
+    refreshTokenCookie.value = tokens.refreshToken;
 
-	accessTokenCookie.value = tokens.accessToken;
-	refreshTokenCookie.value = tokens.refreshToken;
-
-	const state = useState<Tokens>('tokens');
-	state.value = { accessToken: tokens.accessToken, refreshToken: tokens.refreshToken };
-
+    const state = useState<Tokens>('tokens');
+    state.value = {
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken
+    };
 }
 
 export function disconnect() {
-	const accessTokenCookie = useCookie('access_token', {
-		sameSite: true,
-		secure: useIsProduction(),
-		path: '/'
-	});
-	const refreshTokenCookie = useCookie('refresh_token', {
-		sameSite: true,
-		secure: useIsProduction(),
-		path: '/'
-	});
+    const accessTokenCookie = useCookie('access_token', {
+        sameSite: true,
+        secure: useIsProduction(),
+        path: '/'
+    });
+    const refreshTokenCookie = useCookie('refresh_token', {
+        sameSite: true,
+        secure: useIsProduction(),
+        path: '/'
+    });
 
-	accessTokenCookie.value = null;
-	refreshTokenCookie.value = null;
+    accessTokenCookie.value = null;
+    refreshTokenCookie.value = null;
 
-	const tokens = useState<Tokens>('tokens');
-	tokens.value = { accessToken: null, refreshToken: null };
-
+    const tokens = useState<Tokens>('tokens');
+    tokens.value = { accessToken: null, refreshToken: null };
 }

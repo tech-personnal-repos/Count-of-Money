@@ -85,7 +85,7 @@
                         <SvgAccount class="w-8 h-8" color="var(--primary)" />
                     </li> -->
 
-                    <li class="">
+                    <li>
                         <LayoutAccount />
                     </li>
                 </ul>

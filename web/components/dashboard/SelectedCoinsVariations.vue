@@ -2,9 +2,9 @@
     <div class="flex flex-col">
         <div class="flex w-full items-center h-fit max-sm:flex-col">
             <h3 v-if="layout !== 'mobile'">
-                Price variations on selected crypto
+                Price variations on {{ crypto?.name ?? 'crypto' }}
             </h3>
-            <h4 v-else>Price variations</h4>
+            <h4 v-else>{{ crypto?.name ?? 'Price variations' }}</h4>
             <DashboardPeriodSelector class="ml-auto" ref="selector" />
         </div>
         <DashboardVariationsChart

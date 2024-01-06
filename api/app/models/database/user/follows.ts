@@ -1,10 +1,11 @@
 import { ObjectId } from 'mongodb';
 import type { User } from '../database.js';
-import { getUserDataById, updateUserById } from './user.js';
+import { getUserDataById, updateUserFollowedCryptosById } from './user.js';
+import { getCryptoByUUID } from '../crypto/cryptoCurrencies.js';
 
 // const collection = 'users';
 
-export async function getAllFollowsFromUserId(_id: ObjectId) {
+export async function getAllFollowedCryptosFromUserId(_id: ObjectId) {
     const user: User = await getUserDataById(_id);
     if (!user) {
         return Promise.reject({ status: 404, error: `user with id ${_id} not found.`});
@@ -13,14 +14,15 @@ export async function getAllFollowsFromUserId(_id: ObjectId) {
 }
 
 export async function isFollowingCrypto(_id: ObjectId, uuid: string) {
-    const followed = await getAllFollowsFromUserId(_id);
+    await getCryptoByUUID(uuid); //Just to check if it exists
+
+    const followed = await getAllFollowedCryptosFromUserId(_id);
 
     if (!followed) {
         return false;
     }
     const found: boolean = followed.find((value) => {
         if (value == uuid) {
-            console.log(`${value} == ${uuid}`);
             return true;
         }
         return false;
@@ -35,8 +37,9 @@ export async function addFollowedCrypto(_id: ObjectId, uuid: string) {
 
     if (followedCryptos.indexOf(uuid) == -1) {
         followedCryptos.push(uuid);
-        user.followedCryptos = followedCryptos;
-        return await updateUserById(_id, user);
+        if (await updateUserFollowedCryptosById(_id, followedCryptos)) {
+            return true;
+        }
     }
     return false;
 }
@@ -48,18 +51,21 @@ export async function deleteFollowedCrypto(_id: ObjectId, uuid: string) {
 
     if (followedCryptos.indexOf(uuid) != -1) {
         followedCryptos.splice(followedCryptos.indexOf(uuid), 1);
-        user.followedCryptos = followedCryptos;
-        return await updateUserById(_id, user);
+        if (await updateUserFollowedCryptosById(_id, followedCryptos)) {
+            return true;
+        }
     }
     return false;
 }
 
 export async function toggleFollowedCrypto(_id: ObjectId, uuid: string) {
+    let res = {}
     if (await isFollowingCrypto(_id, uuid)) {
-        // console.log(`Unfollowing ${uuid}`)
-        return await deleteFollowedCrypto(_id, uuid);
+        const state = await deleteFollowedCrypto(_id, uuid);
+        res = {state: state, followed: false};
     } else {
-        // console.log(`Following ${uuid}`)
-        return await addFollowedCrypto(_id, uuid);
+        const state = await addFollowedCrypto(_id, uuid);
+        res = {state: state, followed: true};
     }
+    return res;
 }

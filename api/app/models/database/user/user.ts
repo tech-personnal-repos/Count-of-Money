@@ -90,6 +90,16 @@ export async function updateUserById(_id: ObjectId, user: Partial<User>) {
 	return doc ? (doc as User) : Promise.reject({ status: 404, error: 'user not found' });
 }
 
+export async function updateUserFollowedCryptosById(_id: ObjectId, followedCryptos: string[]) {
+	if (!_id) return Promise.reject({ status: 404, error: 'user not found' });
+	if (!followedCryptos) return Promise.reject({ status: 404, error: 'missing new user data' });
+	
+	const doc = await db.collection('users')
+		.findOneAndUpdate({ _id }, { $set: { followedCryptos } }, { returnDocument: 'after' })
+
+	return doc ? (doc as User) : Promise.reject({ status: 404, error: 'user not found' });
+}
+
 export async function updateUserRolesById(_id: ObjectId, roles: string[]) {
 	if (!_id) return Promise.reject({ status: 404, error: 'user not found' });
 	if (!roles) return Promise.reject({ status: 404, error: 'missing new user data' });

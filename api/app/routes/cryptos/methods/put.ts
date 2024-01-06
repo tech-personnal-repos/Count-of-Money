@@ -76,16 +76,8 @@ router.put(
     isLogged,
     schemas('followCrypto'),
     wrap(async (req: LoggedRequest, res: Response) => {
-        const state = await toggleFollowedCrypto(req.user._id, req.body.cryptoId)
-        .then(() => {
-            // console.log("YEah")
-            return true;
-        })
-        .catch((err) => {
-            // console.log(`Ooh.. ${err}`)
-            return false;
-        });
-        res.send({state: state});
+        const state = await toggleFollowedCrypto(req.user._id, req.body.cryptoId);
+        res.send(state);
     })
 )
 

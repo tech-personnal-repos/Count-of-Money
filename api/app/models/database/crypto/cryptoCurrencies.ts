@@ -23,6 +23,14 @@ export async function getCryptoByName(name: string) {
     return doc._id;
 }
 
+export async function getCryptoByUUID(uuid: string) {
+    const doc = await db.collection(collection).findOne({ uuid });
+
+	if (!doc) return Promise.reject({ status: 400, error: `cryptocurrency with uuid: ${uuid} not found` });
+    
+    return doc._id;
+}
+
 export async function getCryptoBySymbol(symbol: string) {
     const doc = await db.collection(collection).findOne({ symbol });
 

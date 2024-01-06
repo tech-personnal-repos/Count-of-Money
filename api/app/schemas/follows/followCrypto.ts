@@ -10,6 +10,7 @@ const response = {
     type: 'object',
 	properties: {
 		state: { type: 'boolean', default: false },
+        followed: { type: 'boolean', default: false},
 	}
 };
 

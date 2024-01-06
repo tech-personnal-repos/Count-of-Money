@@ -30,6 +30,10 @@ services:
     container_name: count-money-api
     restart: always
     environment:
+      SESSION_SECRET: ${SESSION_SECRET}
+      SECRET_HASH: ${SECRET_HASH}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
       DB_NAME: ${MONGO_INITDB_DATABASE}
       DB_URI: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${DB_HOST}:${DB_PORT}/${MONGO_INITDB_DATABASE}
       COINRANKING_KEY: ${COINRANKING_KEY}
@@ -40,7 +44,7 @@ services:
       GOOGLE_TOKEN_URI: ${GOOGLE_TOKEN_URI}
       GOOGLE_AUTH_PROVIDER_X509_CERT_URL: ${GOOGLE_AUTH_PROVIDER_X509_CERT_URL}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
-      GOOGLE_REDIRECT_URI: ${OAUTH_REDIRECT_URI}/oauth/google
+      GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI}
       GOOGLE_USER_URI: ${GOOGLE_USER_URI}
       GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
       GITHUB_AUTH_URI: ${GITHUB_AUTH_URI}
@@ -61,7 +65,7 @@ services:
     container_name: count-money-web
     restart: always
     environment:
-      BACKEND_URL: ${BACKEND_URL}
+      BACKEND_URL: count-money-api
       NODE_ENV: ${NODE_ENV}
       OAUTH_REDIRECT_URI: ${OAUTH_REDIRECT_URI}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
@@ -71,7 +75,7 @@ services:
       GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
       GITHUB_AUTH_URI: ${GITHUB_AUTH_URI}
     ports:
-      - 8080:8080
+      - 80:8080
     depends_on:
       - api
 

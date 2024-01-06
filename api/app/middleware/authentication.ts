@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import { jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 import { getTokenInRequest, isTokenValid } from '../controllers/auth/token.js';
 
@@ -79,14 +79,16 @@ export async function isLoggedWithRefresh(
     }
 
     const userId = new ObjectId(decoded.id);
-    const { email, roles, username, personalKey } =
-        await getUserDataById(userId, {
+    const { email, roles, username, personalKey } = await getUserDataById(
+        userId,
+        {
             _group: 1,
             email: 1,
             roles: 1,
             username: 1,
             personalKey: 1
-        });
+        }
+    );
 
     if (!(await isTokenValid(token, undefined, true))) {
         return res.status(401).send('you are not allowed');
@@ -99,7 +101,42 @@ export async function isLoggedWithRefresh(
         email,
         personalKey,
         roles,
-        username,
+        username
+    };
+
+    next();
+}
+
+export async function isNotLogged(
+    req: LoggedRequest,
+    res: Response,
+    next: NextFunction
+) {
+    const token = await getTokenInRequest(
+        req as unknown as RequestWithQueryAndCookies
+    );
+
+    if (!token) return next();
+
+    const decoded = jwtDecode<DecodedToken>(token);
+    if (!decoded || !decoded.id || !decoded.email || !decoded.username) {
+        return next();
+    }
+
+    const userId = new ObjectId(decoded.id);
+    const { personalKey } = await getUserDataById(userId, {
+        personalKey: 1
+    });
+
+    if (!(await isTokenValid(token, personalKey))) return next();
+
+    req.token = token;
+    req.user = {
+        _id: userId,
+        email: decoded.email,
+        personalKey,
+        roles: decoded.roles || [],
+        username: decoded.username
     };
 
     next();

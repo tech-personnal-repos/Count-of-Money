@@ -4,7 +4,11 @@ import schemas from '../../../middleware/schemas.js';
 import { wrap } from '../../../middleware/route.js';
 
 import type { LoggedRequest, Request, Response } from '../../express.js';
-import { getAllCryptosData, getCryptoById, getCryptoByUUID } from '../../../models/database/crypto/cryptoCurrencies.js';
+import {
+    getAllCryptosData,
+    getCryptoById,
+    getCryptoByUUID
+} from '../../../models/database/crypto/cryptoCurrencies.js';
 import { ObjectId } from 'mongodb';
 import { CryptoCurrency } from '../../../models/database/database.js';
 import { isLogged } from '../../../middleware/authentication.js';
@@ -23,8 +27,8 @@ router.get(
         }
 
         let response: CryptoCurrency[] = [];
-        let cmids: string[] = []
-        
+        let cmids: string[] = [];
+
         if (Array.isArray(queryCmids)) {
             queryCmids.forEach((id: string | qs.ParsedQs) => {
                 cmids.push(id.toString());
@@ -34,39 +38,50 @@ router.get(
         }
         for (const cmid of cmids) {
             const objId: ObjectId = ObjectId.createFromHexString(cmid);
-            await getCryptoById(objId).then((cryptoData) => {
-                response.push(cryptoData);
-            }).catch((err) => {
-                res.send(err);
-            });
+            await getCryptoById(objId)
+                .then(cryptoData => {
+                    response.push(cryptoData);
+                })
+                .catch(err => {
+                    res.send(err);
+                });
         }
         res.send(response);
     })
 );
 
 router.get(
-    "/followed",
+    '/followed',
     rateLimiter,
     isLogged,
-    schemas("followedCryptos", { response: true }),
+    schemas('followedCryptos', { response: true }),
     wrap(async (req: LoggedRequest, res: Response) => {
         const followed = await getAllFollowedCryptosFromUserId(req.user._id);
-        const resObj: {name: string, symbol: string, iconUrl: string, uuid: string}[] = [];
+        const resObj: {
+            name: string;
+            symbol: string;
+            iconUrl: string;
+            uuid: string;
+        }[] = [];
         for (let index = 0; index < followed.length; index++) {
             const followed_cm = followed[index];
             const crypto = await getCryptoByUUID(followed_cm);
-            resObj.push({name: crypto.name, symbol: crypto.symbol, iconUrl: crypto.iconUrl, uuid: crypto.uuid})
+            resObj.push({
+                name: crypto.name,
+                symbol: crypto.symbol,
+                iconUrl: crypto.iconUrl,
+                uuid: crypto.uuid
+            });
         }
         return res.send(resObj);
     })
 );
 
-
 /*
-** Keep this as last function :')
-*/
+ ** Keep this as last function :')
+ */
 router.get(
-    "/:cmid",
+    '/:cmid',
     rateLimiter,
     wrap(async (req: Request, res: Response) => {
         const cmid: string = req.params['cmid'];
@@ -75,12 +90,14 @@ router.get(
             return;
         }
         const objId: ObjectId = ObjectId.createFromHexString(cmid);
-        await getCryptoById(objId).then((cryptoData) => {
-            res.send(cryptoData);
-        }).catch((err) => {
-            res.send(err);
-        });
-    }
-));
+        await getCryptoById(objId)
+            .then(cryptoData => {
+                res.send(cryptoData);
+            })
+            .catch(err => {
+                res.send(err);
+            });
+    })
+);
 
 export default router;

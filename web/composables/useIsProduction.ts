@@ -1,3 +1,3 @@
 export default () => {
-    return process.env.NODE_ENV === 'production';
-}
+    return !useRuntimeConfig().public.wip;
+};

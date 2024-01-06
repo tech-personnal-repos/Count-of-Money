@@ -5,13 +5,13 @@
 
 :root {
     --text: #220022;
-    --background: #FFFFFF;
-    --primary: #4F0868;
-    --secondary: #F4DCFF;
-    --accent: #8F1BBA;
+    --background: #ffffff;
+    --primary: #4f0868;
+    --secondary: #f4dcff;
+    --accent: #8f1bba;
     --accent-15: rgba(143, 27, 186, 0.15);
-    --success: #32C000;
-    --danger: #FB3333;
+    --success: #32c000;
+    --danger: #fb3333;
     --warning: #f9c753;
 
     --card-bg: rgba(0, 0, 0, 0.03);

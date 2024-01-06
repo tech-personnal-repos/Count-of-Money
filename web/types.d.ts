@@ -62,3 +62,9 @@ interface DetailedCoin extends Coin {
     atlDate: string;
     lastUpdated: string;
 }
+
+interface OauthResponse {
+    access_token: string;
+    scope: string;
+    token_type: string;
+}

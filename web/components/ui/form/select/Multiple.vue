@@ -17,7 +17,7 @@
         }"
     >
         <div
-            class="select w-full overflow-y-auto relative p-[3.5px] !pl-2 min-h-[27px] font-h4"
+            class="select w-full overflow-y-auto relative p-[3.5px] !pl-2 min-h-[27px] font-mb1"
             :class="{ disabled, focus: isOpen }"
             :style="{
                 maxHeight
@@ -32,9 +32,7 @@
             <div class="w-[calc(100%-0.75rem)] h-full flex flex-wrap gap-2">
                 <template v-for="(option, index) in selectedOption">
                     <div class="selected-element max-w-[calc(100%-0.5rem)]">
-                        <div
-                            class="max-w-[calc(100%-1.5rem)] text-ellipsis"
-                        >
+                        <div class="max-w-[calc(100%-1.5rem)] text-ellipsis">
                             <slot
                                 :name="`option-${index}`"
                                 :option="selectedOption"

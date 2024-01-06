@@ -2,7 +2,7 @@
     <input
         type="email"
         v-bind="{ ...$attrs, class: '', style: '' }"
-        class="rounded-xl p-1.5 pl-2 font-h4"
+        class="rounded-xl p-0.5 pl-2 font-mb1"
         :style="{
             '--bg-color': bgColor,
             '--outline-color': outlineColor,
@@ -10,7 +10,7 @@
             '--font-color': fontColor
         }"
         :modelValue="modelValue"
-            :autocomplete="autocomplete"
+        :autocomplete="autocomplete"
         @input="manageInput"
         @change="manageChange"
     />

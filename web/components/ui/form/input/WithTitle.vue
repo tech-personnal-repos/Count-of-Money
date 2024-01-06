@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col">
-        <legend :class="'ml-1.5 mb-0.5 w-full'">{{ title }}</legend>
+        <legend :class="'ml-1.5 -mb-0.5 w-full'">{{ title }}</legend>
         <UiFormInput
             v-bind="{ ...$attrs, class: 'w-full h-full', style: '', ...$props }"
             @update:modelValue="emits('update:modelValue', $event)"

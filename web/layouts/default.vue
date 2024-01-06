@@ -52,7 +52,11 @@
                     </li>
 
                     <li class="self-start">
-                        <SvgAccount class="w-8 h-8" color="var(--primary)" />
+                        <SvgAccount
+                            class="w-8 h-8 cursor-pointer"
+                            color="var(--primary)"
+                            @click="AccountModalIsOpen = true"
+                        />
                     </li>
                 </ul>
             </nav>
@@ -129,6 +133,8 @@
     <main v-else>
         <UiLoaderAbsolute class="h-14" />
     </main>
+
+    <LayoutAccountModal v-model:isOpen="AccountModalIsOpen" />
 </template>
 
 <script lang="ts" setup>
@@ -146,6 +152,8 @@ const title = computed(() => {
 
 const screenStore = useScreenStore();
 const { layout } = storeToRefs(screenStore);
+
+const AccountModalIsOpen = ref(false);
 
 onMounted(() => {
     screenStore.update();

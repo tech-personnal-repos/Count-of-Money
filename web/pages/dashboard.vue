@@ -4,20 +4,20 @@
     </Head>
 
     <div
-        class="w-full h-full flex max-lg:flex-col max-lg:overflow-y-auto gap-2"
+        class="w-full flex max-lg:flex-col max-lg:overflow-y-auto gap-2 h-full"
     >
-        <div class="flex flex-col flex-1 gap-4 h-full">
+        <div class="flex lg:flex-1 flex-col gap-4 md:h-full h-1/2">
             <DashboardSelectedCoinsVariations
-                class="h-full w-full"
+                class="w-full lg:h-3/5 h-full"
                 :key="charRefreshKey"
                 :crypto="coinList?.selectedCrypto ?? null"
             />
             <DashboardFollowedArticleList
                 v-if="layout === 'desktop'"
-                class="h-2/5 w-full"
+                class="h-[calc(40%-1rem)] w-full"
             />
         </div>
-        <div class="w-[24rem] max-lg:w-full">
+        <div class="lg:w-[24rem] lg:h-full w-full h-1/2">
             <DashboardFollowedCoinList class="h-full w-full" ref="coinList" />
         </div>
     </div>

@@ -20,9 +20,24 @@ export default defineNuxtConfig({
     runtimeConfig: {
         public: {
             api: process.env.BACKEND_URL,
-            sockets: process.env.SOCKET_URL,
-            static: process.env.STATIC_URL,
-            wip: process.env.NODE_ENV !== 'production'
+            wip: process.env.NODE_ENV !== 'production',
+
+            oauth: {
+                redirectUri: process.env.OAUTH_REDIRECT_URI,
+                google: {
+                    clientId: process.env.GOOGLE_CLIENT_ID,
+                    projectId: process.env.GOOGLE_PROJECT_ID,
+                    authUri: process.env.GOOGLE_AUTH_URI,
+                    tokenUri: process.env.GOOGLE_TOKEN_URI,
+                    authProviderX509CertUrl:
+                        process.env.GOOGLE_AUTH_PROVIDER_X509_CERT_URL
+                },
+
+                github: {
+                    clientId: process.env.GITHUB_CLIENT_ID,
+                    authUri: process.env.GITHUB_AUTH_URI
+                }
+            }
         }
     },
 

@@ -16,7 +16,7 @@
             :type="isHide ? 'password' : 'text'"
             v-bind="{
                 ...$attrs,
-                class: 'rounded-xl p-1.5 pl-2 font-h4 flex-1',
+                class: 'rounded-xl p-0.5 pl-2 font-mb1 flex-1',
                 style: ''
             }"
             :id="id"
@@ -28,7 +28,7 @@
         />
         <div
             @click.stop="toggleHideShow"
-            class="p-1 mr-0.5 ml-auto "
+            class="p-1 mr-0.5 ml-auto"
             :style="{ height: svgHeight + 'px', width: svgHeight + 'px' }"
             ref="svg"
         >
@@ -122,7 +122,6 @@ function manageChange(event: Event) {
 useClickOutside(label, () => {
     isFocus.value = false;
 });
-
 </script>
 
 <style lang="scss" scoped>

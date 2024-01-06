@@ -68,7 +68,6 @@ function mapDataset() {
 
                 const {
                     ctx,
-                    data,
                     chartArea: { top, bottom }
                 } = context.chart;
 
@@ -95,6 +94,11 @@ function mapDataset() {
 watch(() => props.data, mapDataset, { immediate: true });
 
 const localOptions: (typeof options)['value'] = {
+    layout: {
+        padding: {
+            bottom: 20
+        }
+    },
     scales: {
         y: {
             display: true,

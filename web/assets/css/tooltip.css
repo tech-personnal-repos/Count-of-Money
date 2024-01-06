@@ -1,32 +1,22 @@
 .v-popper__inner {
-	background: var(--background) !important;
-	border: none !important;
-
-	color: var(--text) !important;
-
-	font-family: Montserrat !important;
-	font-size: 0.625rem !important;
-	font-style: normal !important;
-	font-weight: 600 !important;
-	line-height: normal !important;
-	letter-spacing: 0.3px !important;
+    background: var(--background) !important;
+    border: 1px solid var(--primary) !important;
 }
 
-
 .v-popper--theme-tooltip .v-popper__inner {
-	border: 1px solid var(--gold) !important;
+    border: 1px solid var(--primary) !important;
 }
 
 .v-popper__arrow-outer {
-	/* border-color: var(--light-1) !important; */
-	display: none !important;
+    /* border-color: var(--light-1) !important; */
+    display: none !important;
 }
 
 .v-popper__arrow-inner {
-	/* border-color: var(--light-1) !important; */
-	display: none !important;
+    /* border-color: var(--light-1) !important; */
+    display: none !important;
 }
 
-.v-popper__arrow-container{
-	display: none !important;
+.v-popper__arrow-container {
+    display: none !important;
 }

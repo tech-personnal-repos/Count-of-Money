@@ -9,7 +9,10 @@ function onRequest({ request, options }: any) {
     options.headers['Content-Type'] = 'application/json';
 
     options.url = request.replace(options.baseURL, '');
-    const tokens = useState<Tokens>('tokens');
+    const tokens = ref({
+        refreshToken: useCookie('refresh_token'),
+        accessToken: useCookie('access_token')
+    });
 
     if (
         !options.headers['Authorization'] &&
@@ -24,7 +27,7 @@ async function onResponse(context: any): Promise<void> {
     const { response, options } = context;
 
     if (response.ok || response.status !== 401) return;
-    if (options.url === '/auth/refresh') {
+    if (options.url === '/users/auth/refresh') {
         disconnect();
         navigateTo('/');
 
@@ -36,13 +39,13 @@ async function onResponse(context: any): Promise<void> {
             failedQueue.push({ resolve, failedConfig: context })
         );
 
-    const refreshToken = useState<Tokens>('tokens').value?.refreshToken;
+    const refreshToken = useCookie('refresh_token').value;
     if (!refreshToken) return;
 
     isRefreshing = true;
     const runtimeConfig = useRuntimeConfig();
 
-    const { data } = await useFetch('/auth/refresh', {
+    const { data } = await useFetch('/users/auth/refresh', {
         method: 'post',
         headers: {
             Authorization: `Bearer ${refreshToken}`,

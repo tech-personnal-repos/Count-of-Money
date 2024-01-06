@@ -36,7 +36,7 @@ export async function isLogged(
     if (
         !decoded ||
         !decoded.id ||
-        !decoded.email ||
+        decoded.email === undefined ||
         !decoded.username /*|| decoded.roles.includes('api')*/
     ) {
         return res.status(401).send('you are not allowed');
@@ -74,7 +74,12 @@ export async function isLoggedWithRefresh(
     if (!token) return res.status(401).send('you are not allowed');
 
     const decoded = jwtDecode<DecodedToken>(token);
-    if (!decoded || !decoded.id || !decoded.email || !decoded.username) {
+    if (
+        !decoded ||
+        !decoded.id ||
+        decoded.email === undefined ||
+        !decoded.username
+    ) {
         return res.status(401).send('you are not allowed');
     }
 

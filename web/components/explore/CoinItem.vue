@@ -11,7 +11,7 @@
                 />
             </div>
             <div
-                class="w-12 h-12 max-sm:w-8 max-sm:h-8 rounded-full bg-white overflow-hidden"
+                class="w-14 h-14 max-sm:w-10 max-sm:h-10 rounded-full bg-white overflow-hidden p-2"
             >
                 <img
                     class="w-full h-full"

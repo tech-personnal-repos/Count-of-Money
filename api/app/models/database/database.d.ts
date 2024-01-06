@@ -13,7 +13,6 @@ export interface User {
     roles?: string[];
     personalKey?: string;
     avatarUrl?: string;
-    creationDate?: string;
 
     githubId?: string;
     googleId?: string;

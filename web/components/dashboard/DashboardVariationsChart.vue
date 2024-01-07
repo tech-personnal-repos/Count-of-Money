@@ -56,7 +56,7 @@ function mapDataset() {
     );
 
     labels.value = history.map(d => {
-        return String(d.timestamp + 1000);
+        return String(d.timestamp);
     });
 
     datasets.value = [
@@ -136,14 +136,16 @@ const localOptions: (typeof options)['value'] = {
                 display: true,
                 maxTicksLimit: 7,
                 align: 'center',
-                callback: (value: any) => {
+                callback: (value: any, index: any, tick: any) => {
                     if (props.period === '1D') {
                         return formatTimeToHuman(
-                            new Date(Number(value * 1000))
+                            //@ts-ignore
+                            new Date(Number(labels.value[index] * 1000))
                         );
                     }
                     return formatDateToHuman(
-                        new Date(Number(value * 1000)),
+                        //@ts-ignore
+                        new Date(Number(labels.value[index] * 1000)),
                         false
                     );
                 }
@@ -166,10 +168,9 @@ const localOptions: (typeof options)['value'] = {
             intersect: false,
             callbacks: {
                 title: (ctx: any) => {
-                    console.log(ctx[0].label);
                     if (props.period === '1D') {
                         return formatTimeToHuman(
-                            new Date(Number(ctx[0].label))
+                            new Date(Number(ctx[0].label * 1000))
                         );
                     }
                     return formatDateToHuman(

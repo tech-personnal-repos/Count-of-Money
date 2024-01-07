@@ -12,6 +12,7 @@ import {
 import { isLogged } from '../../../middleware/authentication.js';
 import schemas from '../../../middleware/schemas.js';
 import { toggleFollowedCrypto } from '../../../models/database/user/follows.js';
+import { hasRole } from '../../../middleware/role.js';
 
 const router = Router();
 
@@ -30,6 +31,8 @@ const options = {
 
 router.put(
     '/update',
+    isLogged,
+    hasRole('admin'),
     rateLimiter,
     wrap(async (req: Request, res: Response) => {
         const response = await get(coinrankingCoins, options)

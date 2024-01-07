@@ -14,25 +14,25 @@ import { close, connect } from './models/database/init.js';
 import { setup } from './config/server.js';
 import { initRoutes } from './routes/routes.js';
 
+import * as cronjobs from './cron/init.js';
+
 import Logger from './config/logger.js';
 
-export const handler = async (event: any, context: any) => {
-    context.callbackWaitsForEmptyEventLoop = false;
+// export const handler = async (event: any, context: any) => {
+//     context.callbackWaitsForEmptyEventLoop = false;
 
-    await connect();
+//     await connect();
 
-    const app = await initRoutes(setup());
-    const port = process.env.SERVER_PORT || 3000;
+//     const app = await initRoutes(setup());
+//     const port = process.env.SERVER_PORT || 3000;
 
-    app.listen(port, () => {
-        console.log(`Example app listening on port ${port}`);
-    });
-};
+//     app.listen(port, () => {
+//         console.log(`Example app listening on port ${port}`);
+//     });
+// };
 
 async function start() {
-    const isProduction =
-        process.env.NODE_ENV === 'production' &&
-        !['dev', 'stage'].includes(process.env.DB_NAME);
+    const isProduction = process.env.NODE_ENV === 'production';
     Logger.info(
         `Starting API in ${isProduction ? 'PRODUCTION' : 'DEVELOPMENT'} mode`
     );
@@ -46,6 +46,8 @@ async function start() {
     server.listen(process.env.SERVER_PORT || 3000, () => {
         const address: any = server.address();
         Logger.info(`Server launched on ${address.address}${address.port}`);
+
+        if (isProduction) cronjobs.start();
     });
 
     process.on('SIGTERM', async () => {

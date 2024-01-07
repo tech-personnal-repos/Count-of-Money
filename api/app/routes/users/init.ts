@@ -1,6 +1,5 @@
 import { Router } from 'express';
 
-import post from './methods/post.js';
 import get from './methods/get.js';
 import post from './methods/post.js';
 

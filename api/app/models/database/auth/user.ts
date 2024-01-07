@@ -13,11 +13,15 @@ import {
 import { generateUserTokens } from '../../../controllers/auth/token.js';
 
 export async function checkUsernameExist(username: string) {
-	const doc = await db.collection('users').findOne({ username });
+    const doc = await db.collection('users').findOne({ username });
 
-	if (doc) return Promise.reject({ status: 400, error: 'username already registered' });
+    if (doc)
+        return Promise.reject({
+            status: 400,
+            error: 'username already registered'
+        });
 
-	return true;
+    return true;
 }
 
 export async function checkEmailExist(email: string) {
@@ -27,18 +31,6 @@ export async function checkEmailExist(email: string) {
         return Promise.reject({
             status: 400,
             error: 'email address already registered'
-        });
-
-    return true;
-}
-
-export async function checkUsernameExist(username: string) {
-    const doc = await db.collection('users').findOne({ username });
-
-    if (doc)
-        return Promise.reject({
-            status: 400,
-            error: 'username address already registered'
         });
 
     return true;

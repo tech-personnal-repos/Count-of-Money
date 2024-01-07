@@ -16,6 +16,21 @@ import { get } from '../../../helpers/fetch.js';
 
 const router = Router();
 
+configDotenv();
+const coinrankingApiKey: string = process.env.COINRANKING_KEY;
+const coinrankingUrlApi: string = 'https://api.coinranking.com/';
+const coinrankingVersion: string = 'v2';
+const coinrankingCoinDetails: string =
+    coinrankingUrlApi + coinrankingVersion + '/coin/:uuid';
+const coinrankingHistory: string =
+    coinrankingUrlApi + coinrankingVersion + '/coin/:uuid/history';
+
+const options = {
+    headers: {
+        'x-access-token': coinrankingApiKey
+    }
+};
+
 router.get(
     '/',
     rateLimiter,
@@ -79,34 +94,27 @@ router.get(
 router.get(
     '/:cmid',
     rateLimiter,
+    schemas('cryptoInfos', { response: true }),
     wrap(async (req: Request, res: Response) => {
         const cmid: string = req.params['cmid'];
+
         if (!cmid) {
             res.status(401).send(`Error with parameter 'cmid': ${cmid}`);
             return;
         }
-        await getCryptoByUUID(cmid)
-            .then(cryptoData => {
-                res.send(cryptoData);
-            })
-            .catch(err => {
-                res.send(err);
-            });
+
+        const response = await get(
+            coinrankingCoinDetails.replace(':uuid', cmid),
+            options
+        ).then(response => response.json());
+
+        if (response['status'] != 'success') {
+            res.send(response);
+            return;
+        }
+        res.send(response['data']['coin']);
     })
 );
-
-configDotenv();
-const coinrankingApiKey: string = process.env.COINRANKING_KEY;
-const coinrankingUrlApi: string = 'https://api.coinranking.com/';
-const coinrankingVersion: string = 'v2';
-const coinrankingCoins: string =
-    coinrankingUrlApi + coinrankingVersion + '/coin/:uuid/history';
-
-const options = {
-    headers: {
-        'x-access-token': coinrankingApiKey
-    }
-};
 
 router.get(
     '/:cmid/history/:period',
@@ -114,12 +122,33 @@ router.get(
     schemas('cryptoHistory', { response: true }),
     wrap(async (req: Request, res: Response) => {
         const cmid = req.params['cmid'];
-        const period = req.params['period'] || '24h';
+        let period = req.params['period'];
+        let valid_period: boolean = false;
 
-        const crypto = await getCryptoByUUID(cmid);
+        const allowed_periods: string[] = [
+            '1h',
+            '3h',
+            '12h',
+            '24h',
+            '7d',
+            '30d',
+            '3m',
+            '1y',
+            '3y',
+            '5y'
+        ];
+
+        allowed_periods.forEach(allowed_period => {
+            if (period == allowed_period) {
+                valid_period = true;
+                return;
+            }
+        });
+        if (!valid_period) {
+            period = '24h';
+        }
         const response = await get(
-            coinrankingCoins.replace(':uuid', crypto.uuid) +
-                `?timePeriod=${period}`,
+            coinrankingHistory.replace(':uuid', cmid) + `?timePeriod=${period}`,
             options
         )
             .then(response => response.json())

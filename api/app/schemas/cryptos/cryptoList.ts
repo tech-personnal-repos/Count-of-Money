@@ -17,7 +17,10 @@ const response = {
                     sparkline: {
                         type: 'array',
                         default: [],
-                        items: { type: 'number' }
+                        items: {
+                            type: 'number',
+                            default: 0
+                        }
                     }
                 }
             }

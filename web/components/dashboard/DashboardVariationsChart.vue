@@ -18,6 +18,10 @@ const props = defineProps({
     crypto: {
         type: Object as PropType<Coin | null>,
         required: true
+    },
+    period: {
+        type: String,
+        required: true
     }
 });
 
@@ -52,8 +56,7 @@ function mapDataset() {
     );
 
     labels.value = history.map(d => {
-        const date = new Date(d.timestamp * 1000);
-        return formatDateToHuman(date);
+        return String(d.timestamp + 1000);
     });
 
     datasets.value = [
@@ -132,7 +135,18 @@ const localOptions: (typeof options)['value'] = {
             ticks: {
                 display: true,
                 maxTicksLimit: 7,
-                align: 'center'
+                align: 'center',
+                callback: (value: any) => {
+                    if (props.period === '1D') {
+                        return formatTimeToHuman(
+                            new Date(Number(value * 1000))
+                        );
+                    }
+                    return formatDateToHuman(
+                        new Date(Number(value * 1000)),
+                        false
+                    );
+                }
             },
             grid: {
                 display: false
@@ -149,7 +163,30 @@ const localOptions: (typeof options)['value'] = {
 
         tooltip: {
             mode: 'index',
-            intersect: false
+            intersect: false,
+            callbacks: {
+                title: (ctx: any) => {
+                    console.log(ctx[0].label);
+                    if (props.period === '1D') {
+                        return formatTimeToHuman(
+                            new Date(Number(ctx[0].label))
+                        );
+                    }
+                    return formatDateToHuman(
+                        new Date(Number(ctx[0].label * 1000)),
+                        true
+                    );
+                },
+                label: (context: any) => {
+                    const label = context.dataset.label || '';
+                    if (label) {
+                        return `${label}: $${formatFloatNumber(
+                            context.parsed.y
+                        )}`;
+                    }
+                    return '$' + formatFloatNumber(context.parsed.y);
+                }
+            }
         }
     }
 };

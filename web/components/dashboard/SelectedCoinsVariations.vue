@@ -12,6 +12,7 @@
             class="w-full flex-1"
             :data="graphData"
             :crypto="crypto"
+            :period="selector?.selectedPeriod ?? '1D'"
             :key="crypto.uuid"
         />
         <UiLoaderAbsolute v-else />

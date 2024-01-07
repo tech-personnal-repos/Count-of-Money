@@ -14,6 +14,7 @@ export interface User {
     personalKey?: string;
     followedCryptos?: string[];
     avatarUrl?: string;
+
     githubId?: string;
     googleId?: string;
 }

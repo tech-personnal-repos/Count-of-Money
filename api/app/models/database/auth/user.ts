@@ -10,6 +10,7 @@ import {
     GoogleUserResponse
     // GoogleUserResponse
 } from '../../../controllers/users/oauth.js';
+import { generateUserTokens } from '../../../controllers/auth/token.js';
 
 export async function checkUsernameExist(username: string) {
 	const doc = await db.collection('users').findOne({ username });
@@ -26,6 +27,18 @@ export async function checkEmailExist(email: string) {
         return Promise.reject({
             status: 400,
             error: 'email address already registered'
+        });
+
+    return true;
+}
+
+export async function checkUsernameExist(username: string) {
+    const doc = await db.collection('users').findOne({ username });
+
+    if (doc)
+        return Promise.reject({
+            status: 400,
+            error: 'username address already registered'
         });
 
     return true;
@@ -64,14 +77,10 @@ export async function createUser(newUser: User) {
         return Promise.reject({ status: 400, error: 'new user undefined' });
     }
 
-    const mailAvailable = await checkEmailExist(newUser.email);
-    if (!mailAvailable) {
-        return mailAvailable;
-    }
-    const usernameAvailable = await checkUsernameExist(newUser.username);
-	if (!usernameAvailable) {
-		return usernameAvailable;
-	}
+    await checkEmailExist(newUser.email);
+    await checkUsernameExist(newUser.username);
+
+    const avatarUrl = newUser.avatarUrl.length ? newUser.avatarUrl : null;
 
     newUser.followedCryptos = [];
     newUser.personalKey = generatePersonalKey();
@@ -80,9 +89,32 @@ export async function createUser(newUser: User) {
         .update(newUser.password)
         .digest('hex');
 
-    const response = await db.collection('users').insertOne({ ...newUser });
-    return await db.collection('users').findOne({ _id: response.insertedId });
+    const response = await db
+        .collection('users')
+        .insertOne({ ...newUser, avatarUrl });
+    return await db
+        .collection('users')
+        .findOne<User>({ _id: response.insertedId });
 }
+
+function capitalize(str: string): string | null {
+    return (
+        str
+            ?.split(' ')
+            .map(s => s.charAt(0).toUpperCase() + s.substring(1))
+            .join(' ') ?? null
+    );
+}
+
+export function login(username: string, password: string) {
+    const encryptedPass = crypto
+        .createHmac('sha256', process.env.SECRET_HASH)
+        .update(password)
+        .digest('hex');
+
+    return generateUserTokens(username, encryptedPass);
+}
+
 export async function getUserWithGithubData(
     user: GithubUserResponse
 ): Promise<User | null> {
@@ -100,7 +132,7 @@ export async function createdUserWithGithubData(
         username: user.login,
         email: user.email,
         githubId: user.id.toString(),
-        displayName: user.login || user.name,
+        displayName: capitalize(user.name) || capitalize(user.login),
         avatarUrl: user.avatar_url,
         personalKey: generatePersonalKey(),
         password: 'githubDefaultPassword'
@@ -129,7 +161,7 @@ export async function createdUserWithGoogleData(
         username: user.email.split('@')[0],
         email: user.email,
         googleId: user.id.toString(),
-        displayName: user.name,
+        displayName: capitalize(user.name),
         avatarUrl: user.picture,
         personalKey: generatePersonalKey(),
         password: 'googleDefaultPassword'

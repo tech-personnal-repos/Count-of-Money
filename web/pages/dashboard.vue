@@ -8,7 +8,7 @@
     >
         <div class="flex lg:flex-1 flex-col gap-4 md:h-full h-1/2">
             <DashboardSelectedCoinsVariations
-                class="w-full lg:h-3/5 h-full"
+                class="w-full h-full lg:h-3/5"
                 :key="charRefreshKey"
                 :crypto="coinList?.selectedCrypto ?? null"
             />

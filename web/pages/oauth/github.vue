@@ -30,7 +30,7 @@ useMountedFetch(async () => {
             `/users/auth/github/callback?${new URLSearchParams(params)}`
         );
         if (errorCallback.value) {
-            useToast.error('An error occurred while login with Google');
+            useToast.error('An error occurred while login with Github');
             return navigateTo('/dashboard');
         }
 

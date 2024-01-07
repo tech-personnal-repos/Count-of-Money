@@ -34,13 +34,27 @@
 <script lang="ts" setup>
 const emits = defineEmits<{
     (e: 'change:form', value: 'login' | 'signup'): void;
+    (e: 'connected'): void;
 }>();
 
 const username = ref('');
 const password = ref('');
 
-function submit() {
-    console.log('submitted');
+async function submit() {
+    const { data, error } = await useApiFetch<AuthResponse>('/users/login', {
+        method: 'POST',
+        body: {
+            username: username.value,
+            password: password.value,
+        }
+    });
+    if (error.value) useToast.error('Invalid username or password');
+
+    setTokenStates({
+        accessToken: data.value.access_token,
+        refreshToken: data.value.refresh_token
+    });
+    setTimeout(()=>{emits('connected')}, 50);
 }
 </script>
 

@@ -41,7 +41,7 @@
                     <li class="mr-auto">
                         <h1>{{ title }}</h1>
                     </li>
-                    <li class="self-start">
+                    <!-- <li class="self-start">
                         <SvgSettings class="w-8 h-8" color="var(--primary)" />
                     </li>
                     <li class="self-start">
@@ -49,14 +49,10 @@
                             class="w-8 h-8"
                             color="var(--primary)"
                         />
-                    </li>
+                    </li> -->
 
                     <li class="self-start">
-                        <SvgAccount
-                            class="w-8 h-8 cursor-pointer"
-                            color="var(--primary)"
-                            @click="AccountModalIsOpen = true"
-                        />
+                        <LayoutAccount />
                     </li>
                 </ul>
             </nav>
@@ -73,7 +69,7 @@
             <nav class="w-full pt-2">
                 <ul class="w-full h-full items-center flex justify-end gap-4">
                     <li class="mr-auto">
-                        <h2>{{ title }}</h2>
+                        <h3>{{ title }}</h3>
                     </li>
                     <!-- <li class="">
                         <SvgSettings class="w-8 h-8" color="var(--primary)" />
@@ -88,6 +84,10 @@
                     <li class="">
                         <SvgAccount class="w-8 h-8" color="var(--primary)" />
                     </li> -->
+
+                    <li>
+                        <LayoutAccount />
+                    </li>
                 </ul>
             </nav>
             <div class="h-[calc(100vh-8rem)] w-full pt-2">
@@ -133,8 +133,6 @@
     <main v-else>
         <UiLoaderAbsolute class="h-14" />
     </main>
-
-    <LayoutAccountModal v-model:isOpen="AccountModalIsOpen" />
 </template>
 
 <script lang="ts" setup>
@@ -152,8 +150,6 @@ const title = computed(() => {
 
 const screenStore = useScreenStore();
 const { layout } = storeToRefs(screenStore);
-
-const AccountModalIsOpen = ref(false);
 
 onMounted(() => {
     screenStore.update();

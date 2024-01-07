@@ -1,53 +1,53 @@
-import { Router } from "express";
-import { rateLimiter } from "../../../middleware/bruteforce.js";
-import { wrap } from "../../../middleware/route.js";
-import { LoggedRequest, Request, Response } from "../../express.js";
-import schemas from "../../../middleware/schemas.js";
-import { User } from "../../../models/database/database.js";
-import { createUser } from "../../../models/database/auth/user.js";
-import { generateUserTokens, refreshUserTokens } from "../../../controllers/auth/token.js";
-import { isLoggedWithRefresh } from "../../../middleware/authentication.js";
+import { Router } from 'express';
 
 const router = Router();
+
+import schemas from '../../../middleware/schemas.js';
+import { wrap } from '../../../middleware/route.js';
+
+import {
+    refreshUserTokens,
+    generateUserTokens
+} from '../../../controllers/auth/token.js';
+import { rateLimiter } from '../../../middleware/bruteforce.js';
+import { isLoggedWithRefresh } from '../../../middleware/authentication.js';
+
+import type { Request, Response, LoggedRequest } from '../../express.js';
+import { createUser, login } from '../../../models/database/auth/user.js';
+
+router.post(
+    '/login',
+    rateLimiter,
+    schemas('login'),
+    wrap(async (req: Request, res: Response) => {
+        const tokens = await login(req.body.username, req.body.password);
+        res.send(tokens);
+    })
+);
 
 router.post(
     '/register',
     rateLimiter,
-    schemas("register"),
+    schemas('register'),
     wrap(async (req: Request, res: Response) => {
-        const email: string = req.body.email;
-		const username: string = req.body.username;
-		const password: string = req.body.password;
-        const newUser: User = {email: email, username: username, password: password}
-        const created = await createUser(newUser);
-		if (!created) {
-			res.send(created);
-		}
-		const tokens = await generateUserTokens(newUser.username, req.body.password);
+        const newUser = await createUser(req.body);
+
+        const tokens = await generateUserTokens(
+            newUser.username,
+            newUser.password
+        );
         res.send(tokens);
-    }
-));
-
-router.post(
-	'/login',
-	rateLimiter,
-	schemas('login'),
-	wrap(async (req: Request, res: Response) => {
-		const tokens = await generateUserTokens(req.body.username, req.body.password);
-		res.send(tokens);
-	})
+    })
 );
 
-
 router.post(
-	'/refresh',
-	isLoggedWithRefresh,
-	schemas('login', { response: true }),
-	wrap(async (req: LoggedRequest, res: Response) => {
-		const token = await refreshUserTokens(req.user);
-		res.send(token);
-	})
+    '/refresh',
+    isLoggedWithRefresh,
+    schemas('login', { response: true }),
+    wrap(async (req: LoggedRequest, res: Response) => {
+        const token = await refreshUserTokens(req.user);
+        res.send(token);
+    })
 );
-
 
 export default router;

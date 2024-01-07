@@ -1,5 +1,9 @@
 # Count-of-Money
 
+[![deploy](https://github.com/tech-personnal-repos/Count-of-Money/actions/workflows/deployment.yml/badge.svg?branch=main)](https://github.com/tech-personnal-repos/Count-of-Money/actions/workflows/deployment.yml)  
+[Deployed Website](http://coutofmoney.hollitizz.me)
+
+
 ## Mockup
 
 [Our mockup](https://www.figma.com/file/CmnjgPyEI15nckKEVUYNxM/Count-Of-Money?type=design&node-id=0%3A1&mode=design&t=b2GOogP3WKJ5rls4-1)

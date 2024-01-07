@@ -27,8 +27,4 @@ export interface CryptoCurrency {
     change: number;
     marketCap: number;
     iconUrl: string;
-    highestPrice: number;
-    highestPriceTimestamp: string;
-    supplyCirculating: number;
-    supplyTotal: number;
 }

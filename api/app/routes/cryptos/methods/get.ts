@@ -39,8 +39,13 @@ router.get(
         const queryCmids = req.query.cmids;
         let cryptosData: CryptoCurrency[] = [];
 
+        const limit = req.query.limit
+            ? parseInt(req.query.limit.toString())
+            : 10;
+        const skip = req.query.skip ? parseInt(req.query.skip.toString()) : 0;
+
         if (!queryCmids) {
-            cryptosData = await getAllCryptosData();
+            cryptosData = await getAllCryptosData(limit, skip);
         } else {
             let cmids: string[] = [];
 
@@ -153,7 +158,7 @@ router.get(
 
         const data: {
             change: string;
-            history: { price: string; timestamp: number };
+            history: { price: string; timestamp: number }[];
         } = response['data'];
         res.send(data);
     })

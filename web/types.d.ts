@@ -67,3 +67,11 @@ interface OauthResponse {
     scope: string;
     token_type: string;
 }
+
+interface CoinHistory {
+    change: string;
+    history: {
+        price: string;
+        timestamp: number;
+    }[];
+}

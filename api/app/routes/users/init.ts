@@ -5,8 +5,6 @@ import post from './methods/post.js';
 
 const router = Router();
 
-router.use('/', post);
-
 router.use('/', get);
 router.use('/', post);
 

@@ -13,6 +13,7 @@ interface CoinsResponse {
             totalExchanges: number;
             totalMarketCap: string;
             total24hVolume: string;
+            sparkline: Array<string>;
         };
         coins: CryptoCurrency[];
     };
@@ -65,7 +66,8 @@ export async function refreshCoinList() {
                             iconUrl: coin.iconUrl,
                             price: coin.price,
                             change: coin.change,
-                            marketCap: coin.marketCap
+                            marketCap: coin.marketCap,
+                            sparkline: coin.sparkline
                         }
                     },
                     upsert: true

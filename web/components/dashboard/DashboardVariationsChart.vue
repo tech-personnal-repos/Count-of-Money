@@ -12,11 +12,15 @@
 <script lang="ts" setup>
 const props = defineProps({
     data: {
-        type: Object as PropType<(typeof useTestData)['data']>,
+        type: Object as PropType<CoinHistory['history']>,
         required: true
     },
     crypto: {
         type: Object as PropType<Coin | null>,
+        required: true
+    },
+    period: {
+        type: String,
         required: true
     }
 });
@@ -40,17 +44,19 @@ const datasets = ref(
 const minValue = ref(0);
 const maxValue = ref(Infinity);
 
-function mapDataset() {
-    minValue.value = Math.min(...props.data.history.map(d => Number(d.price)));
-    maxValue.value = Math.max(...props.data.history.map(d => Number(d.price)));
+const graphMax = computed(() => maxValue.value + maxValue.value * 0.03);
+const graphMin = computed(() => minValue.value - minValue.value * 0.03);
 
-    const history = props.data.history.sort((a, b) =>
+function mapDataset() {
+    minValue.value = Math.min(...props.data.map(d => Number(d.price)));
+    maxValue.value = Math.max(...props.data.map(d => Number(d.price)));
+
+    const history = props.data.sort((a, b) =>
         a.timestamp < b.timestamp ? -1 : 1
     );
 
     labels.value = history.map(d => {
-        const date = new Date(d.timestamp * 1000);
-        return formatTimeToHuman(date);
+        return String(d.timestamp + 1000);
     });
 
     datasets.value = [
@@ -102,8 +108,8 @@ const localOptions: (typeof options)['value'] = {
     scales: {
         y: {
             display: true,
-            min: Math.round(minValue.value - minValue.value * 0.03),
-            max: Math.round(maxValue.value + maxValue.value * 0.03),
+            min: graphMin.value,
+            max: graphMax.value,
             ticks: {
                 display: false,
                 stepSize: Math.round((maxValue.value - minValue.value) / 1.3),
@@ -129,7 +135,18 @@ const localOptions: (typeof options)['value'] = {
             ticks: {
                 display: true,
                 maxTicksLimit: 7,
-                align: 'center'
+                align: 'center',
+                callback: (value: any) => {
+                    if (props.period === '1D') {
+                        return formatTimeToHuman(
+                            new Date(Number(value * 1000))
+                        );
+                    }
+                    return formatDateToHuman(
+                        new Date(Number(value * 1000)),
+                        false
+                    );
+                }
             },
             grid: {
                 display: false
@@ -146,7 +163,30 @@ const localOptions: (typeof options)['value'] = {
 
         tooltip: {
             mode: 'index',
-            intersect: false
+            intersect: false,
+            callbacks: {
+                title: (ctx: any) => {
+                    console.log(ctx[0].label);
+                    if (props.period === '1D') {
+                        return formatTimeToHuman(
+                            new Date(Number(ctx[0].label))
+                        );
+                    }
+                    return formatDateToHuman(
+                        new Date(Number(ctx[0].label * 1000)),
+                        true
+                    );
+                },
+                label: (context: any) => {
+                    const label = context.dataset.label || '';
+                    if (label) {
+                        return `${label}: $${formatFloatNumber(
+                            context.parsed.y
+                        )}`;
+                    }
+                    return '$' + formatFloatNumber(context.parsed.y);
+                }
+            }
         }
     }
 };

@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc",
     "start": "SERVERLESS=false NODE_ENV=production node build/index.js",
-    "dev": "SERVERLESS=false ./node_modules/.bin/nodemon --esm app/index.ts",
+		"dev": "SERVERLESS=false node --watch --no-warnings --loader ts-node/esm app/index.ts",
     "mongod": "MONGOMS_SYSTEM_BINARY=/usr/bin/mongod",
     "test": "NODE_ENV=TEST vitest --single-thread --run",
     "test:solo": "NODE_ENV=TEST vitest",
@@ -17,14 +17,13 @@
     "deadcode": "ts-prune -p tsconfig.ts-prune.json"
   },
   "devDependencies": {
-    "@types/cookie-parser": "^1.4.5",
-    "@types/express": "^4.17.20",
-    "@types/supertest": "^2.0.14",
+    "@types/cookie-parser": "^1.4.6",
+    "@types/express": "^4.17.21",
+    "@types/supertest": "^2.0.16",
     "@vitest/coverage-v8": "^0.34.6",
     "@vitest/ui": "^0.34.6",
     "c8": "^8.0.1",
-    "mongodb-memory-server": "^9.0.1",
-    "nodemon": "^3.0.1",
+    "mongodb-memory-server": "^9.1.1",
     "prettier": "^3.1.0",
     "supertest": "^6.3.3",
     "swagger-ui-express": "^5.0.0",

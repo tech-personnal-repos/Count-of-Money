@@ -1,7 +1,9 @@
 <template>
-    <h1>test</h1>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+
+navigateTo('/dashboard', { replace: true });
+</script>
 
 <style lang="scss" scoped></style>

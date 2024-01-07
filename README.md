@@ -1,5 +1,9 @@
 # Count-of-Money
 
+## Mockup
+
+[Our mockup](https://www.figma.com/file/CmnjgPyEI15nckKEVUYNxM/Count-Of-Money?type=design&node-id=0%3A1&mode=design&t=b2GOogP3WKJ5rls4-1)
+
 ## Deployment
 
 You can deploy this project thanks to [docker](https://www.docker.com/).
@@ -18,3 +22,4 @@ And you're done, have fun !
 - Maxime Silverio Dias
 - Valentin Caure
 - Elie Renneson
+

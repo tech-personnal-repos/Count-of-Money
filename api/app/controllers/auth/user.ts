@@ -8,7 +8,7 @@ import {
 import {
     deleteUserById,
     getUserDataById,
-    updateUserById,
+    updateUserById
 } from '../../models/database/user/user.js';
 
 import type { CreateUserRequest } from '../../schemas/user/userCreate.js';

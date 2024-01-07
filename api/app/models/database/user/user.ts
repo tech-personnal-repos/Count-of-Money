@@ -17,7 +17,7 @@ export async function getAllUsersInGroup(group: ObjectId) {
 
 export async function getUserDataById(
     _id: ObjectId,
-    projection = { _id: 0 } as Projection
+    projection = { _id: 0, password: 0 } as Projection
 ) {
     const doc = await db
         .collection('users')
@@ -47,29 +47,6 @@ export async function getUserDataWithUsernamePassword(
         status: 401,
         error: 'invalid username or password'
     });
-}
-
-export async function getUserDataWithEmailPassword(
-    email: string,
-    password: string,
-    projection = { _id: 0 } as Projection
-) {
-    if (!email || !password) {
-        return Promise.reject({
-            status: 401,
-            error: 'invalid email or password'
-        });
-    }
-
-    const user = await db
-        .collection('users')
-        .findOne<User>(
-            { email, password: generatePasswordHash(password) },
-            { projection }
-        );
-
-    if (user) return user;
-    return Promise.reject({ status: 401, error: 'invalid email or password' });
 }
 
 export async function checkPasswordForUserIdIsCorrect(
@@ -118,6 +95,27 @@ export async function updateUserById(_id: ObjectId, user: Partial<User>) {
         .findOneAndUpdate(
             { _id },
             { $set: { ...user, personalKey } },
+            { returnDocument: 'after' }
+        );
+
+    return doc
+        ? (doc as User)
+        : Promise.reject({ status: 404, error: 'user not found' });
+}
+
+export async function updateUserFollowedCryptosById(
+    _id: ObjectId,
+    followedCryptos: string[]
+) {
+    if (!_id) return Promise.reject({ status: 404, error: 'user not found' });
+    if (!followedCryptos)
+        return Promise.reject({ status: 404, error: 'missing new user data' });
+
+    const doc = await db
+        .collection('users')
+        .findOneAndUpdate(
+            { _id },
+            { $set: { followedCryptos } },
             { returnDocument: 'after' }
         );
 

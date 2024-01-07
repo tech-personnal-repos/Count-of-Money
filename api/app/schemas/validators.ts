@@ -20,7 +20,8 @@ export const isPassword =
 export const isDisplayName = "^[a-zA-ZÀ-ÿ-']+( ?[a-zA-ZÀ-ÿ-']+)*$";
 export const isUrl = '^(https?://)([da-z.-]+).([a-z.]{2,6})([/w .-]*)*/?$';
 export const isObjectID = '^[0-9a-f]{24}$';
-
+export const isName =
+    '^[a-zA-ZŠŒŽšœžŸâêôûÄéÆÇàèÊùÌÍÎÏîÒÓÔÕÖØÙÚÛÜÝàáâãäåæçèéêëìíîïðñòóôõöùúûüýÿ\\- ]+$';
 // export const emailValidationCode = '^d{5}$';
 // export const isApeCode = '^.+ (d{3,4}[A-Z]{1})$';
 // export const isColor = '^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$';

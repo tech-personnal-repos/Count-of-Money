@@ -3,14 +3,16 @@ import { rateLimiter } from '../../../middleware/bruteforce.js';
 import { wrap } from '../../../middleware/route.js';
 import { configDotenv } from 'dotenv';
 import { get } from '../../../helpers/fetch.js';
-import type { Request, Response } from '../../express.js';
+import type { LoggedRequest, Request, Response } from '../../express.js';
 import { CryptoCurrency } from '../../../models/database/database.js';
 import {
     createCrypto,
     updateCryptoByUUID
 } from '../../../models/database/crypto/cryptoCurrencies.js';
-// import { isLogged } from '../../../middleware/authentication.js';
-// import { hasRole } from '../../../middleware/role.js';
+import { isLogged } from '../../../middleware/authentication.js';
+import schemas from '../../../middleware/schemas.js';
+import { toggleFollowedCrypto } from '../../../models/database/user/follows.js';
+import { hasRole } from '../../../middleware/role.js';
 
 const router = Router();
 
@@ -29,8 +31,8 @@ const options = {
 
 router.put(
     '/update',
-    // isLogged,
-    // hasRole('admin'),
+    isLogged,
+    hasRole('admin'),
     rateLimiter,
     wrap(async (req: Request, res: Response) => {
         const response = await get(coinrankingCoins, options)
@@ -65,6 +67,20 @@ router.put(
             }
         }
         res.send('updated successfully !');
+    })
+);
+
+router.put(
+    '/follow',
+    rateLimiter,
+    isLogged,
+    schemas('followCrypto'),
+    wrap(async (req: LoggedRequest, res: Response) => {
+        const state = await toggleFollowedCrypto(
+            req.user._id,
+            req.body.cryptoId
+        );
+        res.send(state);
     })
 );
 

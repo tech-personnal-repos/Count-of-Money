@@ -6,6 +6,9 @@ import profile from './user/profile.js';
 import cryptoInfos from './cryptos/cryptoInfos.js';
 import cryptoHistory from './cryptos/cryptoHistory.js';
 import cryptoToday from './cryptos/cryptoToday.js';
+import cryptoList from './cryptos/cryptoList.js';
+import followCrypto from './follows/followCrypto.js';
+import followedCryptos from './follows/followedCryptos.js';
 
 export default {
     login,
@@ -15,5 +18,8 @@ export default {
 
     cryptoInfos,
     cryptoHistory,
-    cryptoToday
+    cryptoToday,
+    cryptoList,
+    followCrypto,
+    followedCryptos
 };

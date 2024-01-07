@@ -55,9 +55,33 @@ const { layout } = storeToRefs(screenStore);
 const isOpen = ref(false);
 const dropdown = ref();
 
-useClickOutside(dropdown, () => {
-    isOpen.value = false;
+onMounted(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+            closeModal();
+        }
+    });
 });
+
+onUnmounted(() => {
+    document.removeEventListener('mousedown', handleClickOutside);
+    document.removeEventListener('keydown', (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+            closeModal();
+        }
+    });
+});
+
+function handleClickOutside(event: MouseEvent) {
+    if (dropdown.value && !dropdown.value.contains(event.target)) {
+        closeModal();
+    }
+}
+
+function closeModal() {
+    isOpen.value = false;
+}
 </script>
 
 <style lang="scss" scoped></style>

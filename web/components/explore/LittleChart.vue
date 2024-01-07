@@ -39,22 +39,32 @@ const datasets = ref(
 const minValue = ref(0);
 const maxValue = ref(Infinity);
 
-function mapDataset() {
-    minValue.value = Math.min(...props.data.history.map(d => Number(d.price)));
-    maxValue.value = Math.max(...props.data.history.map(d => Number(d.price)));
+const graphMax = computed(() => maxValue.value + maxValue.value * 0.03);
+const graphMin = computed(() => minValue.value - minValue.value * 0.03);
 
-    const history = props.data.history.sort((a, b) =>
-        a.timestamp < b.timestamp ? -1 : 1
+function mapDataset() {
+    minValue.value = Math.min(
+        ...(props.crypto?.sparkline.map(d => Number(d)) ?? [0])
+    );
+    maxValue.value = Math.max(
+        ...(props.crypto?.sparkline.map(d => Number(d)) ?? [1])
     );
 
-    labels.value = history.map(d => {
-        const date = new Date(d.timestamp * 1000);
+    const history = props.crypto?.sparkline;
+    if (!history) {
+        return;
+    }
+
+    labels.value = history.map((d, index) => {
+        const date = new Date();
+        date.setHours(index + 1);
+        date.setMinutes(0);
         return formatTimeToHuman(date);
     });
 
     datasets.value = [
         {
-            data: history.map(d => Number(d.price)),
+            data: history.map(d => Number(d)),
             label: 'Price',
             borderColor: props.color,
             tension: 0.2,
@@ -100,8 +110,8 @@ const localOptions: (typeof options)['value'] = {
     scales: {
         y: {
             display: false,
-            min: Math.round(minValue.value - minValue.value * 0.03),
-            max: Math.round(maxValue.value + maxValue.value * 0.03),
+            min: graphMin.value,
+            max: graphMax.value,
             ticks: {
                 display: false,
                 stepSize: Math.round((maxValue.value - minValue.value) / 1.3),

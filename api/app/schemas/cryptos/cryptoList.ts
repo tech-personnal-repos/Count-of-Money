@@ -13,7 +13,15 @@ const response = {
                     uuid: { type: 'string', transform: ['trim'] },
                     price: { type: 'number', default: 0 },
                     change: { type: 'number', default: 0 },
-                    marketCap: { type: 'number', default: 0 }
+                    marketCap: { type: 'number', default: 0 },
+                    sparkline: {
+                        type: 'array',
+                        default: [],
+                        items: {
+                            type: 'number',
+                            default: 0
+                        }
+                    }
                 }
             }
         }

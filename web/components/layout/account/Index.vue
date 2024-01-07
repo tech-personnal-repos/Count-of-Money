@@ -66,8 +66,6 @@ useMountedFetch(async () => {
 });
 
 function handleConnect() {
-    console.log('connected');
-    console.log(useCookie('access_token').value);
     userStore.fetchUser();
 }
 

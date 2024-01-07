@@ -5,11 +5,12 @@ import { db } from '../init.js';
 
 const collection: string = 'cryptos';
 
-export async function getAllCryptosData() {
+export async function getAllCryptosData(limit, skip) {
     return await db
         .collection(collection)
         .find<CryptoCurrency>({})
-        .limit(50)
+        .limit(limit)
+        .skip(skip)
         .toArray();
 }
 

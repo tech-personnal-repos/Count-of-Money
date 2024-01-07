@@ -11,7 +11,6 @@ on:
 
 jobs:
   runner-job:
-    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Build docker image and deploy
@@ -28,5 +27,11 @@ jobs:
                 echo "Repo already exists in server..."
             fi
             cd ${{ vars.FOLDERPROJECT }}
-            git pull
+            git pull; true
+            if [ ! -s .env ]; then
+                echo ${{ secrets.DEFAULT_ENV }} > .env
+            fi
+            if [ ! -s web/.env ]; then
+                echo ${{ secrets.DEFAULT_ENV }} > web/.env
+            fi
             docker compose up -d --build

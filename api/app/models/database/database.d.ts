@@ -28,4 +28,5 @@ export interface CryptoCurrency {
     change: number;
     marketCap: number;
     iconUrl: string;
+    sparkline: number[];
 }

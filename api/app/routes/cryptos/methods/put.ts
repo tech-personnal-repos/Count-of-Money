@@ -56,7 +56,8 @@ router.put(
                 iconUrl: coin['iconUrl'],
                 price: coin['price'],
                 change: coin['change'],
-                marketCap: coin['marketCap']
+                marketCap: coin['marketCap'],
+                sparkline: coin['sparkline']
             };
             const created = await createCrypto(newCrypto).catch(async () => {
                 return await updateCryptoByUUID(newCrypto.uuid, newCrypto);

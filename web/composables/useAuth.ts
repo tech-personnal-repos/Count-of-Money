@@ -6,12 +6,10 @@ export interface AuthResponse {
 export function setLoginState() {
     const accessTokenCookie = useCookie('access_token', {
         sameSite: true,
-        secure: useIsProduction(),
         path: '/'
     });
     const refreshTokenCookie = useCookie('refresh_token', {
         sameSite: true,
-        secure: useIsProduction(),
         path: '/'
     });
 
@@ -48,14 +46,12 @@ export function setTokenStates(tokens: Tokens | null) {
     const accessTokenCookie = useCookie('access_token', {
         expires: getExpirationDate(tokens.accessToken),
         sameSite: true,
-        secure: useIsProduction(),
         path: '/'
     });
 
     const refreshTokenCookie = useCookie('refresh_token', {
         expires: getExpirationDate(tokens.refreshToken),
         sameSite: true,
-        secure: useIsProduction(),
         path: '/'
     });
 
@@ -75,12 +71,10 @@ export function setTokenStates(tokens: Tokens | null) {
 export function disconnect() {
     const accessTokenCookie = useCookie('access_token', {
         sameSite: true,
-        secure: useIsProduction(),
         path: '/'
     });
     const refreshTokenCookie = useCookie('refresh_token', {
         sameSite: true,
-        secure: useIsProduction(),
         path: '/'
     });
 

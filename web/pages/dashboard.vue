@@ -8,15 +8,14 @@
     >
         <div class="flex lg:flex-1 flex-col gap-4 md:h-full h-1/2">
             <DashboardSelectedCoinsVariations
-                class="w-full h-full"
+                class="w-full h-full lg:h-3/5"
                 :key="charRefreshKey"
                 :crypto="coinList?.selectedCrypto ?? null"
             />
-            <!-- add  "lg:h-3/5" class if restore articles
-                <DashboardFollowedArticleList
+            <DashboardFollowedArticleList
                 v-if="layout === 'desktop'"
                 class="h-[calc(40%-1rem)] w-full"
-            /> -->
+            />
         </div>
         <div class="lg:w-[24rem] lg:h-full w-full h-1/2">
             <DashboardFollowedCoinList class="h-full w-full" ref="coinList" />

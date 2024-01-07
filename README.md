@@ -1,6 +1,6 @@
 # Count-of-Money
 
-[![deploy](https://github.com/tech-personnal-repos/Count-of-Money/actions/workflows/deployment.yml/badge.svg?branch=main)](https://github.com/tech-personnal-repos/Count-of-Money/actions/workflows/deployment.yml)
+[![deploy](https://github.com/tech-personnal-repos/Count-of-Money/actions/workflows/deployment.yml/badge.svg?branch=main)](https://github.com/tech-personnal-repos/Count-of-Money/actions/workflows/deployment.yml)  
 [Deployed Website](http://coutofmoney.hollitizz.me)
 
 ## Mockup

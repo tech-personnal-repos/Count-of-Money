@@ -12,6 +12,7 @@ export interface User {
     displayName?: string;
     roles?: string[];
     personalKey?: string;
+    followedCryptos?: string[];
     avatarUrl?: string;
 
     githubId?: string;
@@ -27,8 +28,4 @@ export interface CryptoCurrency {
     change: number;
     marketCap: number;
     iconUrl: string;
-    highestPrice: number;
-    highestPriceTimestamp: string;
-    supplyCirculating: number;
-    supplyTotal: number;
 }

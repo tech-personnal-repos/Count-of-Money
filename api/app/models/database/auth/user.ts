@@ -12,6 +12,14 @@ import {
 } from '../../../controllers/users/oauth.js';
 import { generateUserTokens } from '../../../controllers/auth/token.js';
 
+export async function checkUsernameExist(username: string) {
+	const doc = await db.collection('users').findOne({ username });
+
+	if (doc) return Promise.reject({ status: 400, error: 'username already registered' });
+
+	return true;
+}
+
 export async function checkEmailExist(email: string) {
     const doc = await db.collection('users').findOne({ email });
 
@@ -74,6 +82,7 @@ export async function createUser(newUser: User) {
 
     const avatarUrl = newUser.avatarUrl.length ? newUser.avatarUrl : null;
 
+    newUser.followedCryptos = [];
     newUser.personalKey = generatePersonalKey();
     newUser.password = crypto
         .createHmac('sha256', process.env.SECRET_HASH)

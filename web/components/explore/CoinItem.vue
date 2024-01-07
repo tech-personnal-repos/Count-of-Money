@@ -30,12 +30,22 @@
             </div>
 
             <div class="flex flex-wrap gap-2 flex-1 justify-center">
-                <p class="font-mb1 max-sm:font-legendb text-center">
-                    ${{ price }}
-                </p>
-                <p class="flex-1 font-mb1 max-sm:font-legendb text-center">
-                    ${{ formatPrices(parseInt(crypto.marketCap)) }}
-                </p>
+                <div class="flex-1">
+                    <p class="font-mb1 max-sm:font-legendb text-center">
+                        Price
+                    </p>
+                    <p class="font-mb1 max-sm:font-legendb text-center">
+                        ${{ price }}
+                    </p>
+                </div>
+                <div class="flex-1">
+                    <p class="flex-1 font-mb1 max-sm:font-legendb text-center">
+                        MarketCap
+                    </p>
+                    <p class="flex-1 font-mb1 max-sm:font-legendb text-center">
+                        ${{ formatPrices(parseInt(crypto.marketCap)) }}
+                    </p>
+                </div>
             </div>
 
             <div class="flex flex-col justify-center">

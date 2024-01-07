@@ -34,4 +34,5 @@ jobs:
             if [ ! -s web/.env ]; then
                 echo ${{ secrets.DEFAULT_ENV }} > web/.env
             fi
+            docker compose down
             docker compose up -d --build

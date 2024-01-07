@@ -36,7 +36,7 @@ watch(
     () => {
         followedUUID.value = followed.value?.map(c => c.uuid) || [];
     },
-    { deep: true }
+    { deep: true, immediate: Boolean(followed.value) }
 );
 
 function selectCrypto(crypto: Coin) {

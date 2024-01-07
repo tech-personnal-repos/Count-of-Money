@@ -41,9 +41,13 @@ defineExpose({
     selectedCrypto
 });
 
-watchOnce(followed, () => {
-    selectedCrypto.value = followed.value?.at(0) || null;
-});
+watchOnce(
+    followed,
+    () => {
+        selectedCrypto.value = followed.value?.at(0) || null;
+    },
+    { immediate: Boolean(followed.value) }
+);
 
 function selectCrypto(crypto: Coin) {
     selectedCrypto.value = crypto;

@@ -168,7 +168,7 @@ router.get(
 
         const data: {
             change: string;
-            history: { price: string; timestamp: number };
+            history: { price: string; timestamp: number }[];
         } = response['data'];
         res.send(data);
     })

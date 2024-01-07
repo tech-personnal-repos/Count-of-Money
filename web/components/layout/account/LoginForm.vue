@@ -40,9 +40,21 @@ const emits = defineEmits<{
 const username = ref('');
 const password = ref('');
 
-function submit() {
-    console.log('submitted');
-    emits('connected');
+async function submit() {
+    const { data, error } = await useApiFetch<AuthResponse>('/users/login', {
+        method: 'POST',
+        body: {
+            username: username.value,
+            password: password.value,
+        }
+    });
+    if (error.value) useToast.error('Invalid username or password');
+
+    setTokenStates({
+        accessToken: data.value.access_token,
+        refreshToken: data.value.refresh_token
+    });
+    setTimeout(()=>{emits('connected')}, 50);
 }
 </script>
 

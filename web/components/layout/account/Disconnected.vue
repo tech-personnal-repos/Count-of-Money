@@ -3,10 +3,12 @@
         <LayoutAccountLoginForm
             v-if="form === 'login'"
             @change:form="form = 'signup'"
+            @connected="emits('connected')"
         />
-        <LayoutAccountSignUpForm
+        <LayoutAccountRegisterForm
             v-else-if="form === 'signup'"
             @change:form="form = 'login'"
+            @connected="emits('connected')"
         />
         <div class="w-full flex gap-2 mt-2">
             <NuxtLink :to="googleAuthUrl" class="oauth">
@@ -58,6 +60,7 @@ const githubAuthUrl = computed(() => {
 
 const emits = defineEmits<{
     (e: 'update:isOpen', value: boolean): void;
+    (e: 'connected'): void;
 }>();
 </script>
 

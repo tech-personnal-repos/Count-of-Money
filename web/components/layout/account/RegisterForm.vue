@@ -66,9 +66,25 @@ const password = ref('');
 const email = ref('');
 const avatarUrl = ref('');
 
-function submit() {
-    console.log('submitted');
-    emits('connected');
+async function submit() {
+    const { data, error } = await useApiFetch<AuthResponse>('/users/register', {
+        method: 'POST',
+        body: {
+            username: username.value,
+            displayName: displayName.value,
+            password: password.value,
+            email: email.value,
+            avatarUrl: avatarUrl.value
+        }
+    });
+
+    if (error.value) useToast.error('Username or email is already taken');
+
+    setTokenStates({
+        accessToken: data.value.access_token,
+        refreshToken: data.value.refresh_token
+    });
+    setTimeout(()=>{emits('connected')}, 50);
 }
 </script>
 

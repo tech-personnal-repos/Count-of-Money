@@ -13,16 +13,14 @@ import { rateLimiter } from '../../../middleware/bruteforce.js';
 import { isLoggedWithRefresh } from '../../../middleware/authentication.js';
 
 import type { Request, Response, LoggedRequest } from '../../express.js';
+import { createUser, login } from '../../../models/database/auth/user.js';
 
 router.post(
     '/login',
     rateLimiter,
     schemas('login'),
     wrap(async (req: Request, res: Response) => {
-        const tokens = await generateUserTokens(
-            req.body.email,
-            req.body.password
-        );
+        const tokens = await login(req.body.username, req.body.password);
         res.send(tokens);
     })
 );
@@ -32,9 +30,11 @@ router.post(
     rateLimiter,
     schemas('register'),
     wrap(async (req: Request, res: Response) => {
+        const newUser = await createUser(req.body);
+
         const tokens = await generateUserTokens(
-            req.body.email,
-            req.body.password
+            newUser.username,
+            newUser.password
         );
         res.send(tokens);
     })

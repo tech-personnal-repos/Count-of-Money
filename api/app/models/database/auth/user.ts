@@ -10,6 +10,7 @@ import {
     GoogleUserResponse
     // GoogleUserResponse
 } from '../../../controllers/users/oauth.js';
+import { generateUserTokens } from '../../../controllers/auth/token.js';
 
 export async function checkEmailExist(email: string) {
     const doc = await db.collection('users').findOne({ email });
@@ -18,6 +19,18 @@ export async function checkEmailExist(email: string) {
         return Promise.reject({
             status: 400,
             error: 'email address already registered'
+        });
+
+    return true;
+}
+
+export async function checkUsernameExist(username: string) {
+    const doc = await db.collection('users').findOne({ username });
+
+    if (doc)
+        return Promise.reject({
+            status: 400,
+            error: 'username address already registered'
         });
 
     return true;
@@ -56,10 +69,10 @@ export async function createUser(newUser: User) {
         return Promise.reject({ status: 400, error: 'new user undefined' });
     }
 
-    const mailAvailable = await checkEmailExist(newUser.email);
-    if (!mailAvailable) {
-        return mailAvailable;
-    }
+    await checkEmailExist(newUser.email);
+    await checkUsernameExist(newUser.username);
+
+    const avatarUrl = newUser.avatarUrl.length ? newUser.avatarUrl : null;
 
     newUser.personalKey = generatePersonalKey();
     newUser.password = crypto
@@ -67,8 +80,12 @@ export async function createUser(newUser: User) {
         .update(newUser.password)
         .digest('hex');
 
-    const response = await db.collection('users').insertOne({ ...newUser });
-    return await db.collection('users').findOne({ _id: response.insertedId });
+    const response = await db
+        .collection('users')
+        .insertOne({ ...newUser, avatarUrl });
+    return await db
+        .collection('users')
+        .findOne<User>({ _id: response.insertedId });
 }
 
 function capitalize(str: string): string | null {
@@ -78,6 +95,15 @@ function capitalize(str: string): string | null {
             .map(s => s.charAt(0).toUpperCase() + s.substring(1))
             .join(' ') ?? null
     );
+}
+
+export function login(username: string, password: string) {
+    const encryptedPass = crypto
+        .createHmac('sha256', process.env.SECRET_HASH)
+        .update(password)
+        .digest('hex');
+
+    return generateUserTokens(username, encryptedPass);
 }
 
 export async function getUserWithGithubData(

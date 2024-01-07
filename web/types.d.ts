@@ -10,13 +10,12 @@ interface SelectOption {
 }
 
 interface User {
-    id: number;
+    email: string | null;
+    password: string;
     username: string;
-    email: string;
-    avatar: string;
-    bio: string;
-    createdAt: string;
-    updatedAt: string;
+    displayName?: string;
+    roles?: string[];
+    avatarUrl?: string;
     followedCryptos: CryptoMoney[];
     favoriteCryptos: CryptoMoney[];
 }

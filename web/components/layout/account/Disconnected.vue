@@ -1,5 +1,5 @@
 <template>
-    <UiModal :isOpen="isOpen" @update:isOpen="emits('update:isOpen', $event)">
+    <div class="p-4 mr-4 rounded-md">
         <LayoutAccountLoginForm
             v-if="form === 'login'"
             @change:form="form = 'signup'"
@@ -8,7 +8,6 @@
             v-else-if="form === 'signup'"
             @change:form="form = 'login'"
         />
-
         <div class="w-full flex gap-2 mt-2">
             <NuxtLink :to="googleAuthUrl" class="oauth">
                 <img src="@/assets/icons/google.png" alt="google" class="h-6" />
@@ -19,17 +18,10 @@
                 <p class="text-baseline">Github</p>
             </NuxtLink>
         </div>
-    </UiModal>
+    </div>
 </template>
 
 <script lang="ts" setup>
-const props = defineProps({
-    isOpen: {
-        type: Boolean,
-        required: true
-    }
-});
-
 const form = ref('login' as 'login' | 'signup');
 
 const runtimeConfig = useRuntimeConfig();

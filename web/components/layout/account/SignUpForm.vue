@@ -57,6 +57,7 @@
 <script lang="ts" setup>
 const emits = defineEmits<{
     (e: 'change:form', value: 'login' | 'signup'): void;
+    (e: 'connected'): void;
 }>();
 
 const username = ref('');
@@ -67,6 +68,7 @@ const avatarUrl = ref('');
 
 function submit() {
     console.log('submitted');
+    emits('connected');
 }
 </script>
 

@@ -2,7 +2,7 @@ name: deploy
 
 on:
   workflow_run:
-    workflows: [ "front" ]
+    workflows: [front]
     branches:
       - main
     types:
@@ -27,6 +27,6 @@ jobs:
             else
                 echo "Repo already exists in server..."
             fi
-            cd timeManager
+            cd ${{ vars.FOLDERPROJECT }}
             git pull
             docker compose up -d --build

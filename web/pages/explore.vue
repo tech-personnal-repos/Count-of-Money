@@ -8,12 +8,6 @@
     </div>
 </template>
 
-<script lang="ts" setup>
-import { useScreenStore } from '~/store/screen';
-import ExploreCoinList from '@/components/explore/CoinList.vue';
-
-const { layout } = useScreenStore();
-const coinList = ref(null as InstanceType<typeof ExploreCoinList> | null);
-</script>
+<script lang="ts" setup></script>
 
 <style lang="scss" scoped></style>

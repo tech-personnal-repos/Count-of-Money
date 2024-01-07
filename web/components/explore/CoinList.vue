@@ -1,15 +1,16 @@
 <template>
     <div class="flex flex-col">
-        <ul class="flex flex-1 flex-col gap-4 overflow-auto p-3">
+        <ul class="flex flex-1 flex-col gap-4 overflow-auto p-3" v-if="loaded">
             <li v-for="crypto in cryptos" :key="crypto.uuid">
                 <ExploreCoinItem
                     class="card"
                     :crypto="crypto"
-                    :selected="selectedCrypto.includes(crypto)"
+                    :selected="followedUUID?.includes(crypto.uuid) ?? false"
                     @select="selectCrypto"
                 />
             </li>
         </ul>
+        <UiLoaderAbsolute v-else />
     </div>
 </template>
 
@@ -17,26 +18,29 @@
 import { useCryptosStore } from '@/store/cryptos';
 
 const cryptosStore = useCryptosStore();
-const { cryptos } = storeToRefs(cryptosStore);
+const { cryptos, followed } = storeToRefs(cryptosStore);
 
-const selectedCrypto = ref([] as Coin[]);
+const followedUUID = ref([] as string[]);
+const loaded = ref(false);
 
-defineExpose({
-    selectedCrypto
+useMountedFetch(async () => {
+    const promises = [];
+    if (!cryptos.value) promises.push(cryptosStore.fetchCryptos());
+    if (!followed.value) promises.push(cryptosStore.fetchFollowed());
+    await Promise.all(promises);
+    loaded.value = true;
 });
 
-useMountedFetch(() => {
-    if (!cryptos.value) cryptosStore.fetchCryptos();
-});
+watch(
+    followed,
+    () => {
+        followedUUID.value = followed.value?.map(c => c.uuid) || [];
+    },
+    { deep: true }
+);
 
 function selectCrypto(crypto: Coin) {
-    if (selectedCrypto.value.includes(crypto))
-        selectedCrypto.value = selectedCrypto.value.filter(
-            c => c.uuid !== crypto.uuid
-        );
-    else selectedCrypto.value.push(crypto);
-
-    // TODO: push list of selected or trigger error toast to ask login
+    cryptosStore.followCrypto(crypto);
 }
 </script>
 

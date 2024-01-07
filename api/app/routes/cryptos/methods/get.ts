@@ -67,21 +67,11 @@ router.get(
     schemas('followedCryptos', { response: true }),
     wrap(async (req: LoggedRequest, res: Response) => {
         const followed = await getAllFollowedCryptosFromUserId(req.user._id);
-        const resObj: {
-            name: string;
-            symbol: string;
-            iconUrl: string;
-            uuid: string;
-        }[] = [];
-        for (let index = 0; index < followed.length; index++) {
+        const resObj: CryptoCurrency[] = [];
+        for (let index = 0; index < followed?.length ?? 0; index++) {
             const followed_cm = followed[index];
             const crypto = await getCryptoByUUID(followed_cm);
-            resObj.push({
-                name: crypto.name,
-                symbol: crypto.symbol,
-                iconUrl: crypto.iconUrl,
-                uuid: crypto.uuid
-            });
+            resObj.push(crypto);
         }
         return res.send(resObj);
     })

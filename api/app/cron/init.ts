@@ -12,7 +12,7 @@ export async function start() {
     // scheduleJob('0 0 * * 1'); // every monday
     // scheduleJob('0 0 1 1 *'); // Every 1st January
 
-    scheduleJob('*/1 * * * *', refreshCoinList());
+    scheduleJob('*/1 * * * *', refreshCoinList);
 }
 
 // setTimeout(async () => {

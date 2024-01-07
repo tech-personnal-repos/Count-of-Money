@@ -8,32 +8,44 @@
         @click="isOpen = !isOpen"
         ref="dropdown"
     >
-        <div class="flex items-center gap-2 mr-4">
-            <SvgAccount
-                v-if="!user || !user.avatarUrl"
-                class="w-10 h-10"
-                color="var(--primary)"
-            />
-            <div
-                v-else
-                class="outline outline-primary rounded-full -outline-offset-2"
-            >
-                <img
-                    :src="user.avatarUrl"
-                    alt="avatar"
-                    class="w-10 h-10 max-sm:w-6 max-sm:h-6 rounded-full"
+        <div class="flex items-center gap-2 mr-4 cursor-pointer">
+            <template v-if="loaded">
+                <SvgAccount
+                    v-if="!isAvatarValid"
+                    class="w-10 h-10"
+                    color="var(--primary)"
                 />
-            </div>
-            <h5 v-if="!user">Sign In</h5>
-            <h5 v-else-if="layout !== 'mobile'">{{ user.displayName }}</h5>
-            <SvgArrowBottom :class="isOpen ? 'transform rotate-180' : ''" />
+                <div
+                    v-else
+                    class="outline outline-primary rounded-full -outline-offset-2"
+                >
+                    <img
+                        v-if="user"
+                        :src="user.avatarUrl"
+                        alt="avatar"
+                        class="w-10 h-10 max-sm:w-6 max-sm:h-6 rounded-full"
+                    />
+                </div>
+                <h5 v-if="!user">Sign In</h5>
+                <h5 v-else-if="layout !== 'mobile' && user">
+                    {{ user.displayName }}
+                </h5>
+                <SvgArrowBottom :class="isOpen ? 'transform rotate-180' : ''" />
+            </template>
+            <template v-else>
+                <div class="flex-center w-20">
+                    <UiLoader />
+                </div>
+            </template>
         </div>
         <template #popper>
-            <LayoutAccountDisconnected
-                v-if="!user"
-                @connected="userStore.fetchUser()"
-            />
-            <LayoutAccountConnected v-else @disconnect="user = null" />
+            <div ref="content">
+                <LayoutAccountDisconnected
+                    v-if="!user"
+                    @connected="handleConnect"
+                />
+                <LayoutAccountConnected v-else @disconnect="user = null" />
+            </div>
         </template>
     </VDropdown>
 </template>
@@ -42,11 +54,27 @@
 import { useScreenStore } from '~/store/screen';
 import { useUserStore } from '~/store/user';
 
+const loaded = ref(false);
+
+const isAvatarValid = ref(false);
+
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
-useMountedFetch(() => {
-    console.log('fetching user');
-    if (!user.value) userStore.fetchUser();
+useMountedFetch(async () => {
+    if (!user.value) await userStore.fetchUser();
+    loaded.value = true;
+});
+
+function handleConnect() {
+    console.log('connected');
+    console.log(useCookie('access_token').value);
+    userStore.fetchUser();
+}
+
+watch(user, async () => {
+    if (!user.value || !user.value.avatarUrl)
+        return (isAvatarValid.value = false);
+    isAvatarValid.value = await verifyUrlImage(user.value.avatarUrl);
 });
 
 const screenStore = useScreenStore();
@@ -54,6 +82,16 @@ const { layout } = storeToRefs(screenStore);
 
 const isOpen = ref(false);
 const dropdown = ref();
+const content = ref();
+
+async function verifyUrlImage(url: string) {
+    const response = await fetch(url, { method: 'HEAD' });
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.startsWith('image/')) {
+        return true;
+    }
+    return false;
+}
 
 onMounted(() => {
     document.addEventListener('mousedown', handleClickOutside);
@@ -74,7 +112,7 @@ onUnmounted(() => {
 });
 
 function handleClickOutside(event: MouseEvent) {
-    if (dropdown.value && !dropdown.value.contains(event.target)) {
+    if (content.value && !content.value.contains(event.target)) {
         closeModal();
     }
 }

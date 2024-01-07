@@ -35,7 +35,7 @@ router.put(
     hasRole('admin'),
     rateLimiter,
     wrap(async (req: Request, res: Response) => {
-        const response = await get(coinrankingCoins, options)
+        const response = await get(coinrankingCoins + '?limit=100', options)
             .then(response => response.json())
             .then(response => {
                 return response;

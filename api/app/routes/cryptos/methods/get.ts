@@ -6,7 +6,8 @@ import { wrap } from '../../../middleware/route.js';
 import type { LoggedRequest, Request, Response } from '../../express.js';
 import {
     getAllCryptosData,
-    getCryptoByUUID
+    getCryptoByUUID,
+    getCryptoByUUIDS
 } from '../../../models/database/crypto/cryptoCurrencies.js';
 import { CryptoCurrency } from '../../../models/database/database.js';
 import { isLogged } from '../../../middleware/authentication.js';
@@ -72,13 +73,8 @@ router.get(
     schemas('followedCryptos', { response: true }),
     wrap(async (req: LoggedRequest, res: Response) => {
         const followed = await getAllFollowedCryptosFromUserId(req.user._id);
-        const resObj: CryptoCurrency[] = [];
-        for (let index = 0; index < followed?.length ?? 0; index++) {
-            const followed_cm = followed[index];
-            const crypto = await getCryptoByUUID(followed_cm);
-            resObj.push(crypto);
-        }
-        return res.send(resObj);
+        if (!followed?.length ?? 0) res.send([]);
+        else return res.send(await getCryptoByUUIDS(followed ?? []));
     })
 );
 

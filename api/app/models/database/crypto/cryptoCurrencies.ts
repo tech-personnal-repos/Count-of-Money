@@ -52,6 +52,21 @@ export async function getCryptoByUUID(uuid: string) {
     return doc;
 }
 
+export async function getCryptoByUUIDS(uuids: string[]) {
+    const doc = await db
+        .collection(collection)
+        .find<CryptoCurrency>({ uuid: { $in: uuids } })
+        .toArray();
+
+    if (!doc)
+        return Promise.reject({
+            status: 400,
+            error: `cryptocurrency with uuid: ${uuids} not found`
+        });
+
+    return doc;
+}
+
 export async function getCryptoBySymbol(symbol: string) {
     const doc = await db
         .collection(collection)

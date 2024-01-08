@@ -11,6 +11,7 @@ import {
     // GoogleUserResponse
 } from '../../../controllers/users/oauth.js';
 import { generateUserTokens } from '../../../controllers/auth/token.js';
+import { getAllCryptosData } from '../crypto/cryptoCurrencies.js';
 
 export async function checkUsernameExist(username: string) {
     const doc = await db.collection('users').findOne({ username });
@@ -74,7 +75,9 @@ export async function createUser(newUser: User) {
 
     const avatarUrl = newUser.avatarUrl.length ? newUser.avatarUrl : null;
 
-    newUser.followedCryptos = [];
+    const firstCryptos = await getAllCryptosData(5, 0);
+
+    newUser.followedCryptos = [...firstCryptos.map(crypto => crypto.uuid)];
     newUser.personalKey = generatePersonalKey();
     newUser.password = crypto
         .createHmac('sha256', process.env.SECRET_HASH)
@@ -120,6 +123,8 @@ export async function getUserWithGithubData(
 export async function createdUserWithGithubData(
     user: GithubUserResponse
 ): Promise<User> {
+    const firstCryptos = await getAllCryptosData(5, 0);
+
     const newUser: User = {
         username: user.login,
         email: user.email,
@@ -127,7 +132,8 @@ export async function createdUserWithGithubData(
         displayName: capitalize(user.name) || capitalize(user.login),
         avatarUrl: user.avatar_url,
         personalKey: generatePersonalKey(),
-        password: 'githubDefaultPassword'
+        password: 'githubDefaultPassword',
+        followedCryptos: [...firstCryptos.map(crypto => crypto.uuid)]
     };
 
     const response = await db.collection('users').insertOne({ ...newUser });
@@ -149,6 +155,8 @@ export async function getUserWithGoogleData(
 export async function createdUserWithGoogleData(
     user: GoogleUserResponse
 ): Promise<User> {
+    const firstCryptos = await getAllCryptosData(5, 0);
+
     const newUser: User = {
         username: user.email.split('@')[0],
         email: user.email,
@@ -156,7 +164,8 @@ export async function createdUserWithGoogleData(
         displayName: capitalize(user.name),
         avatarUrl: user.picture,
         personalKey: generatePersonalKey(),
-        password: 'googleDefaultPassword'
+        password: 'googleDefaultPassword',
+        followedCryptos: [...firstCryptos.map(crypto => crypto.uuid)]
     };
 
     const response = await db.collection('users').insertOne({ ...newUser });

@@ -86,4 +86,6 @@ export function disconnect() {
         accessToken: useCookie('access_token')
     });
     tokens.value = { accessToken: null, refreshToken: null };
+
+    location.reload();
 }

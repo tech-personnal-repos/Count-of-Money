@@ -32,6 +32,7 @@ useMountedFetch(async () => {
     await Promise.all(promises);
     if (!followed.value || !followed.value.length)
         followed.value = cryptos.value?.slice(0, 5) || [];
+    selectedCrypto.value = followed.value[0] ?? null;
     loaded.value = true;
 });
 
@@ -40,14 +41,6 @@ const selectedCrypto = ref(null as Coin | null);
 defineExpose({
     selectedCrypto
 });
-
-watchOnce(
-    followed,
-    () => {
-        selectedCrypto.value = followed.value?.at(0) || null;
-    },
-    { immediate: Boolean(followed.value) }
-);
 
 function selectCrypto(crypto: Coin) {
     selectedCrypto.value = crypto;

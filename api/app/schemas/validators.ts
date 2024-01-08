@@ -16,7 +16,7 @@ export const isEmail =
     '^[a-zA-Z0-9.!#$%&’+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)$';
 export const isUsername = '^(?![_-])(?!.*[_-]{2})[a-zA-Z0-9_-]{3,16}(?<![_-])$';
 export const isPassword =
-    '^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[!@#$%^&*]).{8,}$';
+    '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*]).{8,}$';
 export const isDisplayName = "^[a-zA-ZÀ-ÿ-']+( ?[a-zA-ZÀ-ÿ-']+)*$";
 export const isUrl = '^(https?://)([da-z.-]+).([a-z.]{2,6})([/w .-]*)*/?$';
 export const isObjectID = '^[0-9a-f]{24}$';
